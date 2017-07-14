@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    WebGrid grid = new WebGrid(Model, rowsPerPage: 10, canSort: true);
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<style>
+    .page-search {
+        padding: 19px 0;
+    }
+</style>
+
+<div class="page-container">
+    
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <div class="container">
+                <div class="col-md-4">
+                    <!-- BEGIN PAGE TITLE -->
+                    <div class="page-title">
+                        <h1>Stock Availability</h1>
+                     </div>
+                   
+                </div>
+
+                <div class="col-md-8">
+                    <div class="col-md-7 pull-left page-search">
+
+                        <form class="search-form" method="GET">
+@using (Html.BeginForm("List", "BranchScrollStationery", FormMethod.Get
+, new { enctype = "multipart/form-data" }))
+{
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" id="" value="@ViewBag.qur" name="query" style="border:solid 1px #f26222">
+                                <span class="input-group-btn">
+                                    <input class="btn submit icon-magnifier" type="submit" style="background:#f26222; color:white;">
+                                        
+                                </span>
+                            </div>
+}
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                <!-- END PAGE TITLE -->
+            </div>
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE CONTENT BODY -->
+        <div class="page-content">
+            <div class="container">
+                <!-- BEGIN PAGE BREADCRUMBS -->
+                <ul class="page-breadcrumb breadcrumb">
+                    <li>
+                        <a href="index-2.html">Home</a>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                    <li>
+                        <span>Stock Availability</span>
+                    </li>
+                    <li class="pull-right">
+                        <a type="button" class="btn btn-success" data-toggle="modal" href="@Url.Action("Create")">Create New</a>
+                    </li>
+                </ul>
+                <!-- END PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE CONTENT INNER -->
+                <div class="page-content-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-comments"></i>Branch Stock List
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse"> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                        <a href="#" class="reload" onclick="reloadGrid()"> </a>
+                                        <a href="javascript:;" class="remove"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-scrollable">
+                                        @grid.GetHtml(
+            tableStyle: "table table-striped table-hover webgrid",
+                                    mode: WebGridPagerModes.All, //paging to grid
+                                    firstText: "<< First",
+                                    previousText: "< Prev",
+                                    nextText: "Next >",
+                                    lastText: "Last >>",
+                                    columns: new[]  // colums in grid
+                                    {
+                                        grid.Column(columnName:"BankCode",header:"Bank Code",format:@<text>@item.BankCode</text>),
+                                        grid.Column(columnName:"MainScrollNumber",header:"MainScroll Number",format:@<text>@item.MainScrollNumber</text>),
+                                        grid.Column(columnName:"StationeryPrinted",header:"Stationery Printed",format:@<text>@item.StationeryPrinted</text>),
+                                        grid.Column(columnName:"StationeryDamaged",header:"Stationery Damaged",format:@<text>@item.StationeryDamaged</text>),
+                                        grid.Column(columnName:"TotalStationeryUsed",header:"TotalStationery Used",format:@<text>@item.TotalStationeryUsed</text>),
+                                        grid.Column(columnName:"TotalAmount",header:"Total Amount",format:@<text>@item.TotalAmount</text>),
+                @*grid.Column( header:"Active",format:@<text> @{var cls=""; if(item.Status==true) {cls="checked='checked'"; }}<input type="checkbox" @cls value="@item.Id" id="chk_@item.Id" disabled="disabled" class="chkBoxGroup" /></text>),*@
+                                      grid.Column(header:" ", format:@<text><a href="@Url.Action("Edit", null, new { Id = item.Id },this.Request.Url.Scheme)" class="btn btn-link btn-xs font-blue">Edit</a> </text>)
+                                    }
+           )
+                                       
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="dialog-confirm" title="Confirm" style="display:none;">
+    <h3 style="margin:0 7px 6px 0;font-size:16px;font-family:Arial">Are you sure you want to delete?</h3>
+</div>
+@Html.Raw(ViewBag.Result)
+<script>
+    function deleteConfirm(id)
+    {
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                "Delete": function () {
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        url: "@(Url.Action("Delete", "BranchScrollStationery"))",
+                        data: {
+                            "Id": id,
+                            },
+                    success: function (data) {
+                        redirect("List");
+                        $(this).dialog("close");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+
+                        alert(xhr.responseText);
+                    }
+                });
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+
+    
+
+    function reloadGrid()
+    {     
+        $(".webgrid").load("/Admin/BranchScrollStationery/List .webgrid");
+    }
+    function redirect(url) {
+        window.location.href = url;
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#toast-container').delay(2000).fadeOut(2000);
+    });
+</script>
+

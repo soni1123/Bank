@@ -1,0 +1,91 @@
+﻿@{
+    var area = HttpContext.Current.Request.RequestContext.RouteData.DataTokens["area"];
+    area = area ?? "";
+ } 
+
+@if (area.Equals("Admin"))
+{
+
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+            <a href="#">
+                Menu
+            </a>
+        </li>
+        
+        <li class="cus-drop-down">
+            <a>Master <span class="caret"></span></a>
+            <ul class="first">
+                <li><a href=@Url.Action("List","Country",new {area="SuperAdmin"})>Country Master</a></li>
+                <li><a href="~/SuperAdmin/State">State Master</a></li>
+                <li><a href="~/SuperAdmin/District">District Master</a></li>
+                <li><a href=@Url.Action("List","City", new { area="SuperAdmin"})>City Master</a></li>
+                <li><a href="~/SuperAdmin/Branch">Branch Master</a></li>
+                <li><a href="#">Role Master</a></li>
+                <li><a href=@Url.Action("List","ArticleMaster",new {area= "SuperAdmin"})>Article Code Master</a></li>
+                <li><a href="~/SuperAdmin/Receipt">Receipt Type Master </a></li>
+                <li><a href="~/SuperAdmin/ArticleMaster">Article Master </a></li>
+                <li><a href="~/SuperAdmin/Movability">Movability Type Master </a></li>
+                <li><a href="~/SuperAdmin/Office"> Office Master </a></li>
+            </ul>
+        </li>
+        
+
+        <li class="cus-drop-down">
+            <a>Branch Stock Details <span class="caret"></span></a>
+            <ul class="first">
+                <li><a href="~/Admin/BranchScrollStationery">MainScroll Stationery</a></li>
+                <li><a href="~/Admin/BranchScrollTransaction">MainScroll Transaction Stationery</a></li>
+            </ul>
+        </li>
+        
+        <li><a href="#">Reports</a></li>
+        <li class="cus-drop-down">
+            <a>Settings <span class="caret"></span></a>
+        </li>
+
+    </ul>
+</div>
+}
+else if (area.Equals("SuperAdmin"))
+{
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    Menu
+                </a>
+            </li>
+            
+            <li class="cus-drop-down">
+                <a>Master <span class="caret"></span></a>
+                <ul class="first">
+                    <li><a href=@Url.Action("List","Country",new {area="SuperAdmin"})>Country Master</a></li>
+                    <li><a href="~/SuperAdmin/State">State Master</a></li>
+                    <li><a href="~/SuperAdmin/District">District Master</a></li>
+                    <li><a href=@Url.Action("List","City", new { area="SuperAdmin"})>City Master</a></li>
+                    <li><a href="~/SuperAdmin/Branch">Branch Master</a></li>
+                    <li><a href="#">Role Master</a></li>
+                    <li><a href=@Url.Action("List","ArticleMaster",new {area= "SuperAdmin"})>Article Code Master</a></li>
+                    <li><a href="~/SuperAdmin/Receipt">Receipt Type Master </a></li>
+                    <li><a href="~/SuperAdmin/ArticleMaster">Article Master </a></li>
+                    <li><a href="~/SuperAdmin/Movability">Movability Type Master </a></li>
+                    <li><a href="~/SuperAdmin/Office"> Office Master </a></li>
+                </ul>
+            </li>
+            <li class="cus-drop-down">
+                <a>Stock Details <span class="caret"></span></a>
+                <ul class="first">
+                    <li><a href="~/SuperAdmin/SupMainScrollStationery">MainScroll Stationery</a></li>
+                    <li><a href="~/SuperAdmin/SupMainTransactionStationery">MainScroll Transaction Stationery</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Reports</a></li>
+            <li class="cus-drop-down">
+                <a>Settings <span class="caret"></span></a>
+            </li>
+
+        </ul>
+    </div>
+}

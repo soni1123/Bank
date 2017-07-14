@@ -1,0 +1,251 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <title>Payment of Stamp Duty and Registration Fees</title>
+
+    <!-- Optional - Google font -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Gafata" />
+
+    <link href="~/Content/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/flat-form.css" rel="stylesheet" />
+    <link href="~/Content/assets/page-style.css" rel="stylesheet" />
+
+    <style>
+        legend.spLegend {
+            background: #FAAD30;
+            padding: 0px 15px !important;
+            color: white !important;
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        ol.instructionul li {
+            color: #000;
+        }
+
+        ul.options.open {
+            border: solid 1px #000;
+        }
+
+        .panel-body form fieldset > .col-md-12 {
+            padding: 0;
+        }
+
+        #AlertMSG, #EditeSBTRForm, #SubmiteSBTRForm {
+            display: none;
+        }
+
+        .ParticularsGroup > div[class*="col-md-"] {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .collapsePanel {
+            width: 100%;
+            display: block;
+            padding: 0;
+            margin: 0;
+        }
+
+        .highlight {
+            background: #d68f1b !important;
+        }
+
+        .spLegend {
+            cursor: pointer;
+        }
+
+        .fa-angle-down {
+            margin-top: 5px;
+            transition: all 0.5s ease-in-out;
+            -moz-transition: all 0.5s ease-in-out;
+            -webkit-transition: all 0.5s ease-in-out;
+        }
+
+        fieldset {
+            border: solid 1px #FAAD30;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="col-md-8">
+                <h1>Payment of Stamp Duty and Registration Fees</h1>
+            </div>
+            <div class="col-md-4"> <img src="~/Content/assets/img/syndicate-bank-logo.png" class="img-responsive" style="width:100%; margin:3px 0"></div>
+        </header>
+        <div class="clearfix"></div>
+        <div class="content">
+
+            <article class="col-sm-12 col-md-12">
+                <div class="col-md-12" style="float:none; margin-left:auto; margin-right:auto;">
+
+                    <!-- START Registration form -->
+
+                    <div class="panel panel-form">
+                        <!-- Form header -->
+                        <div class="panel-heading">
+                            <h2 class="title">e-SBTR Input Form</h2> <!---->
+                        </div>
+
+
+                        @RenderBody()
+
+
+                                    <!-- Form footer -->
+                                    <!--<div class="panel-footer"> <span class="required-field">*</span> - required field </div> -->
+                        </div>
+
+                        <!-- END Registration form -->
+
+                    </div>
+            </article>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    @*<script src="~/Content/assets/global/plugins/jquery.min.js" type="text/javascript"></script>*@
+    <script src="~/Content/js/jquery-2.1.1.min.js"></script>
+    <script src="~/Content/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    @*<script src="~/Content/js/fancySelect.js"></script>*@
+
+    @*<script>
+			$(document).ready(function() {
+				$('.custom-select').fancySelect(); 
+				$('[data-toggle="tooltip"]').tooltip() 
+			});
+    </script>*@
+    <script>
+$(document).ready(function(){
+	$('#SaveeSBTRForm').on('click',function(){
+	   
+	    $("fieldset input").attr('readonly', true);
+	    $('fieldset select').prop('disabled', true);
+	    $('input[type=radio]').prop('disabled', true);
+		$('#AlertMSG, #EditeSBTRForm, #SubmiteSBTRForm').show(300);
+		$(this).hide();
+		$("html, body").animate({ scrollTop: 0 }, "slow");
+	});
+	$('#EditeSBTRForm').on('click', function () {
+	    $('fieldset input').attr('readonly', false);
+	    $('fieldset select').prop('disabled', false);
+	    $('input[type=radio]').prop('disabled', false);
+
+	    $('#stampduty').attr('readonly', true);
+	    $('#registrationfee').attr('readonly', true);
+	    $('#challanamount').attr('readonly', true);
+	    
+		//$('#AlertMSG, #SubmiteSBTRForm').hide(300);
+		//$('#SubmiteSBTRForm').show(300);
+	});
+     
+	$('#SubmiteSBTRForm').on('click', function () {
+	    $('fieldset input').attr('readonly', false);
+	    $('fieldset select').prop('disabled', false);
+	    $('input[type=radio]').prop('disabled', false);
+
+	    $('#stampduty').attr('readonly', true);
+	    $('#registrationfee').attr('readonly', true);
+	    $('#challanamount').attr('readonly', true);
+
+	    if ($("#districtcode").val() == "0" || $("#districtcode").val() == "")
+	    {
+	        $("#districtcode").tooltip({ show: { duration: 800 } });
+	        $("#districtcode").trigger('mouseenter');
+	        $("html, body").animate({ scrollTop: 0 }, "slow");
+	        return false;
+	    }
+	    else if ($("#officename").val() == "0" || $("#officename").val() == "")
+	    {
+	        $("#officename").tooltip({ show: { duration: 800 } });
+	        $("#officename").trigger('mouseenter');
+	        $("html, body").animate({ scrollTop: 0 }, "slow");
+	        return false;
+	    }
+
+	    //$('#AlertMSG, #SubmiteSBTRForm').hide(300);
+	    //$('#SubmiteSBTRForm').show(300);
+	});
+////////////////////////////////////////////////////
+//StampAmount
+//RegistrationFeeAmount
+//TotalAmount
+$('#StampAmount').on('keyup',function(){
+	updateTotal();
+});
+$('#RegistrationFeeAmount').on('keyup',function(){
+	updateTotal();
+});
+
+//////////////////////////////////////////////////////
+//#radio-Individual #radio-Company #radio-Government #radio-ForeignBodies
+$('#radio-Individual, #radio-Company, #radio-Government, #radio-ForeignBodies').on('click', function(){
+	if($('#radio-Company').is(':checked') == true)
+	{
+		$('#DutyPayerID ~ ul.options li[data-raw-value="PAN"]').addClass('selected').siblings().removeClass('selected');
+		$('#DutyPayerID option[value="PAN"]').attr('selected','selected').siblings().removeAttr('selected');
+		$('#DutyPayerID + div.form-control').text('PAN');
+//		alert('yes');
+	}else if($('#radio-Government').is(':checked') == true)
+	{
+		$('#DutyPayerID ~ ul.options li[data-raw-value="TAN"]').addClass('selected').siblings().removeClass('selected');
+		$('#DutyPayerID option[value="TAN"]').attr('selected','selected').siblings().removeAttr('selected');
+		$('#DutyPayerID + div.form-control').text('TAN');
+	}else if($('#radio-ForeignBodies').is(':checked') == true)
+	{
+		$('#DutyPayerID ~ ul.options li[data-raw-value="FID"]').addClass('selected').siblings().removeClass('selected');
+		$('#DutyPayerID option[value="FID"]').attr('selected','selected').siblings().removeAttr('selected');
+		$('#DutyPayerID + div.form-control').text('FID');
+	}else
+	{
+		$('#DutyPayerID ~ ul.options li[data-raw-value="0"]').addClass('selected').siblings().removeClass('selected');
+		$('#DutyPayerID option[value="0"]').attr('selected','selected').siblings().removeAttr('selected');
+		$('#DutyPayerID + div.form-control').text('- Select Duty Payer ID -');
+	}
+});
+
+
+
+////////
+var updateTotal = function(){
+	var initAmt = 0;
+	var StampAmount = parseInt($('#StampAmount').val());
+	var RegistrationFeeAmount = parseInt($('#RegistrationFeeAmount').val());
+	var TotalAmount = StampAmount + RegistrationFeeAmount;
+	var TotupdatedAMt = initAmt += TotalAmount;
+	$('#TotalAmount').val(TotupdatedAMt);
+}
+
+
+		});
+/////////////////////////////////////////////////////////// collapsable panel
+
+$(document).ready(function(){
+	$('.spLegend').click(function(){
+	$(this).next('div.collapsePanel').toggle(500, function(){
+		$(this).prev('.spLegend').toggleClass( "highlight" );
+	});
+	if(!$(this).hasClass('highlight')){
+		$(this).find('i.fa-angle-down').css('transform','rotate(-180deg)');
+	}else{
+		$(this).find('i.fa-angle-down').css('transform','rotate(0deg)');
+	}
+	});
+});
+
+    </script>
+</body>
+</html>

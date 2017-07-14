@@ -1,0 +1,95 @@
+﻿@using SyndicateBank.Areas.SuperAdmin.Models
+@model IEnumerable<SupMainTransactionStationeryModel>
+   
+
+@{
+    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 3);
+    grid.Pager(WebGridPagerModes.All);
+    SyndicateBank.Models.DefaultConnection def = new SyndicateBank.Models.DefaultConnection();
+    
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="page-container">
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <div class="container">
+                <div class="col-md-4">
+                    <!-- BEGIN PAGE TITLE -->
+                   
+                </div>
+                <!-- END PAGE TITLE -->
+            </div>
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE CONTENT BODY -->
+        <div class="page-content">
+            <div class="container">
+                <!-- BEGIN PAGE BREADCRUMBS -->
+                @*<ul class="page-breadcrumb breadcrumb">
+                        <li>
+                            <a href="index-2.html">Home</a>
+                            <i class="fa fa-circle"></i>
+                        </li>
+                        <li>
+                            <span>Stock Availability</span>
+                        </li>
+                    </ul>*@
+                <!-- END PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE CONTENT INNER -->
+                <div class="page-content-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-comments"></i>Main Transaction Stationery
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse"> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                        <a href="#" class="reload" onclick="reloadGrid()"> </a>
+                                        <a href="javascript:;" class="remove"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-scrollable">
+                                        @grid.GetHtml(
+                     tableStyle: "table table-striped table-hover webgrid", // applying style on grid
+                                    mode: WebGridPagerModes.All, //paging to grid
+                                    firstText: "<< First",
+                                    previousText: "< Prev",
+                                    nextText: "Next >",
+                                    lastText: "Last >>",
+                                    columns: new[]  // colums in grid
+                                    {
+                                         grid.Column(columnName:"BankCode",header:"Bank Code",format:@<text>@item.BankCode</text>),
+                                        grid.Column(columnName:"MainScrollNumber",header:"MainScroll Number",format:@<text>@item.MainScrollNumber</text>),
+                                        grid.Column(columnName:"StationeryNumber",header:"Stationery Name",format:@<text>@item.StationeryNumber</text>),
+                                       grid.Column(columnName:"MainScrollDate",header:"MainScrollDate ",format:@<text>@item.MainScrollDate.ToString("dd/MM/yyyy")</text>),
+                                      grid.Column(columnName:"BranchCode",header:"Branch Code",format:@<text>@def.BranchMasters.Find(Convert.ToInt32(item.BranchCode)).BranchCode</text>),
+                                      grid.Column(columnName:"BranchCode",header:"Branch Name ", format:@<text>@def.BranchMasters.Find(Convert.ToInt32(item.BranchCode)).BranchName</text>),
+                                      grid.Column(header:" ", format:@<text><a href="@Url.Action("ViewDetails", null, new { Id = item.Id }, this.Request.Url.Scheme)" class="btn btn-success">View Branch Details</a> </text>),
+
+
+                                    }
+)
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

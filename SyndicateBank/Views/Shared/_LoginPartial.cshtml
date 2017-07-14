@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.Owin.Security;
+@using SyndicateBank.Areas.SuperAdmin.Models;
+@using SyndicateBank.Models;
+@using SyndicateBank.ViewModels;
+@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+@using System.Web;
+@using System.Web.Mvc;
+
+     
+@if (Request.IsAuthenticated)
+{
+    //using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    //{
+        @Html.AntiForgeryToken()
+    string name = User.Identity.GetUserId();
+    DefaultConnection def = new DefaultConnection();
+    {
+        var getrole = def.AspNetUsers.Find(name);
+        //var getroles = def.RoleMasters.FindAsync(getrole.)
+    }
+    
+    
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + def.AspNetUsers.Find(name) + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+
+            </li>
+            <li><a href="~/Account/LogOff">Log off</a></li>
+        </ul>
+    //}
+}
+@*else
+{
+    <ul class="nav navbar-nav navbar-right">
+        
+
+        <li><a href="~/Account/Register">Register</a></li>
+        <li><a href="~/Account/Login">Login</a></li>
+        <li><a href="~/Account/LogOff">Logoff</a></li>
+
+    </ul>
+}*@
+
+

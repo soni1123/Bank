@@ -1,0 +1,606 @@
+﻿@model HomeViewModel
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    legend.spLegend {
+        background: #FAAD30;
+        padding: 5px 15px !important;
+        color: white !important;
+        font-weight: 500;
+        font-size: 22px;
+    }
+
+    ol.instructionul li {
+        color: #000;
+    }
+
+    ul.options.open {
+        border: solid 1px #000;
+    }
+
+    .panel-body form fieldset > .col-md-12 {
+        padding: 0;
+    }
+
+    #selectBranch, #selectBranchNamount {
+        display: none;
+    }
+</style>
+
+
+<div class="container">
+    <header class="header">
+        <div class="col-md-8">
+            <h1>Payment of Stamp Duty and Registration Fees</h1>
+        </div>
+        <div class="col-md-4"> <img src="~/Content/images/synd-logo.jpg" class="img-responsive" style="width:100%; margin:3px 0"></div>
+    </header>
+    <div class="clearfix"></div>
+
+       @using(Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+      { 
+         <div class="content">
+        <article class="col-sm-12 col-md-12">
+            <div class="col-md-9" style="float:none; margin-left:auto; margin-right:auto;">
+
+                <!-- START Registration form -->
+
+                <div class="panel panel-form">
+                    <!-- Form header -->
+                    <div class="panel-heading">
+                        <!--<h2 class="title">Select Mode of Payment</h2> -->
+                        <p>&nbsp;</p>
+                    </div>
+                    <div class="panel-body">
+
+                        <fieldset>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <legend class="spLegend">Select Mode of Payment</legend>
+                                    <div class="col-sm-6 col-md-3 col-md-offset-3">
+                                        <div class="radio">
+                                            <label class="custom-option button">
+                                                @*<input type="radio" id="radio-lang-1" name="radio-language" value="en" checked="checked" />*@
+                                                @Html.RadioButtonFor(r => r.PaymentMode, "online", new { @id = "radio-lang-1", @name = "radio-language", @checked = "true", @value = "online" })
+                                                <span class="button-radio"></span>
+                                            </label>
+                                            <label for="radio-lang-1">Online</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="radio">
+                                            <label class="custom-option button">
+                                                @*<input type="radio" id="radio-lang-2" name="radio-language" value="de" />*@
+                                                @Html.RadioButtonFor(r => r.PaymentMode, "counter", new { @id = "radio-lang-2", @name = "radio-language", @value = "counter" })
+                                                <span class="button-radio"></span>
+                                            </label>
+                                            <label for="radio-lang-2">Across the Bank Counter</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="onlineChecked">
+                                <legend class="spLegend">Type of Receipt</legend>
+                                <div class="form-group">
+                                    @*<div class="col-sm-6 col-md-3 col-md-offset-3">
+                                        <div class="radio">
+                                        <label class="custom-option button">
+                                        <input type="radio" id="radio-Receipt-1" name="radio-Receipt" value="en" checked="checked" />
+                                        <span class="button-radio"></span>
+                                        </label>
+                                        <label for="radio-Receipt-1">Simple Receipt</label>
+                                        </div>
+                                        </div>*@
+                                    <div class="col-sm-6 col-md-3 col-md-offset-3">
+                                        <div class="radio">
+                                            <label class="custom-option button">
+                                                <input type="radio" id="radio-Receipt-2" name="radio-Receipt" value="de" checked="checked" />
+                                                <span class="button-radio"></span>
+                                            </label>
+                                            <label for="radio-Receipt-2">e-SBTR</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" id="selectBranch" style="padding:0;">
+                                    <legend class="spLegend">Select Your Branch</legend>
+
+                                    <div class="form-group country">
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="ddlCountry" class="control-label">Country</label>  @Html.DropDownListFor(r => r.CountryId, Model.CountryList, new { @class = "custom-select form-control", @id = "ddlCountry" })
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="ddlState" class="control-label">State</label> @Html.DropDownListFor(r => r.StateId, Model.StateList, new { @class = "custom-select form-control", @id = "ddlState" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group country">
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="ddlDistrict" class="control-label"> District</label> @Html.DropDownListFor(r => r.DistrictId, Model.DistrictList, new { @class = "custom-select form-control", @id = "ddlDistrict" })
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="ddlCity" class="control-label">City</label>  @Html.DropDownListFor(r => r.CityId, Model.CityList, new { @class = "custom-select form-control", @id = "ddlCity" })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="radio">
+                                                <label class="custom-option button">
+                                                    <input type="radio" id="ThroughIFSCode" name="radio-Through" value="en" />
+                                                    <span class="button-radio"></span>
+                                                </label>
+                                                <label for="ThroughIFSCode">Through IFS Code</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="radio">
+                                                <label class="custom-option button">
+                                                    <input type="radio" id="ThroughBranchName" name="radio-Through" value="de" checked="checked" />
+                                                    <span class="button-radio"></span>
+                                                </label>
+                                                <label for="ThroughBranchName">Through Branch Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="BankIfsCode" />
+                                            <p class="help-block">Optional help text.</p>
+                                            @Html.TextBoxFor(r => r.BranchName, new { @class = "form-control", @id = "BN", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" id="BankBranchName">
+                                            <!--<label for="inputSelect-2" class="col-md-4 control-label">Select Your Branch</label> -->
+                                            @Html.DropDownListFor(r => r.BranchId, Model.BranchList, new { @class = "custom-select form-control", @id = "BranchList" })
+                                            <p class="help-block">Optional help text.</p>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="col-md-12" id="selectBranchNamount" style="padding:0;">
+                                    <div class="col-md-6" style="padding:0;">
+                                        <legend class="spLegend">Select Your Branch</legend>
+                                        <div class="form-group country">
+                                            <div class="col-sm-6 col-md-6">
+                                                <label for="ddlCountry" class="control-label">Country</label>  @Html.DropDownListFor(r => r.CountryId, Model.CountryList, new { @class = "custom-select form-control", @id = "CountryList" })
+                                            </div>
+                                            <div class="col-sm-6 col-md-6">
+                                                <label for="ddlState" class="control-label">State</label> @Html.DropDownListFor(r => r.StateId, Model.StateList, new { @class = "custom-select form-control", @id = "StateList" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group country">
+                                            <div class="col-sm-6 col-md-6">
+                                                <label for="ddlDistrict" class="control-label"> District</label>   @Html.DropDownListFor(r => r.DistrictId, Model.DistrictList, new { @class = "custom-select form-control", @id = "DistrictList" })
+                                            </div>
+                                            <div class="col-sm-6 col-md-6">
+                                                <label for="ddlCity" class="control-label">City</label>   @Html.DropDownListFor(r => r.CityId, Model.CityList, new { @class = "custom-select form-control", @id = "CityList" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="BranchNamevdAmount">
+                                            <label for="ddlBranch" class="control-label">Branch</label>
+                                            @Html.DropDownListFor(r => r.BranchId, Model.BranchList, new { @class = "custom-select form-control", @id = "BranchId" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" style="padding:0;">
+                                        <legend class="spLegend">Enter Amount</legend>
+                                        <label for="AmountvdBranchName" class="control-label">Enter Amount</label>
+                                        @Html.TextBoxFor(r => r.Amount, new { @class = "form-control", @id = "AmountvdBranchName" })
+                                        @*<input type="text" class="form-control" id="AmountvdBranchName" />*@
+                                        @*<div class="col-md-12 form-group">
+
+                                            </div>*@
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </fieldset>
+                        <div class="col-md-12">
+                            <!-- Agree static text -->
+                            <div class="form-group">
+                                <p class="form-control-static"> <strong>Instructions:</strong></p><br>
+                                <ol class="instructionul">
+                                    <li>The Standing Instructions feature facilitates periodic scheduled payments for funds transfer, third party payment, and RTGS/NEFT/State Bank Group transactions. </li>
+                                    <li>You can register standing instructions on your savings and current accounts. You can register multiple standing instructions on different accounts and at different frequencies.</li>
+                                    <li>
+                                        You will receive an SMS when a standing instruction is executed and your account is debited.
+                                    </li>
+                                    <li>
+                                        Funds transfer, Third Party transfer, Inter Bank Transfer to other bank accounts, or state bank group accounts.
+                                    </li>
+                                    <li>
+                                        You can register standing instructions for 1 month to 6 months and from 5 days to 30 days.
+                                    </li>
+                                    <li>The Standing Instructions feature facilitates periodic scheduled payments for funds transfer, third party payment, and RTGS/NEFT/State Bank Group transactions. </li>
+                                    <li>You can register standing instructions on your savings and current accounts. You can register multiple standing instructions on different accounts and at different frequencies.</li>
+                                    <li>
+                                        You will receive an SMS when a standing instruction is executed and your account is debited.
+                                    </li>
+                                    <li>
+                                        Funds transfer, Third Party transfer, Inter Bank Transfer to other bank accounts, or state bank group accounts.
+                                    </li>
+                                    <li>
+                                        You can register standing instructions for 1 month to 6 months and from 5 days to 30 days.
+                                    </li>
+                                </ol>
+                                <div class="checkbox">
+                                    <label class="custom-option button">
+                                        <input type="checkbox" id="iveread" name="checkbox-language" value="en" />
+                                        <span class="button-checkbox"></span>
+                                    </label>
+                                    <label for="iveread">I have read the above instructions and accept the same..</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Logun button -->
+                        <div class="form-group" align="center">
+                            <button id="firstNext" type="submit" class="btn btn-primary">Submit</button>
+                            <!--<a class="btn btn-link" href="forgot.html">Forgotten your password?</a> -->
+                        </div>
+
+                    </div>
+
+                    <!-- Form footer -->
+                    <!--<div class="panel-footer"> <span class="required-field">*</span> - required field </div> -->
+                </div>
+
+                <!-- END Registration form -->
+
+            </div>
+        </article>
+        <div class="clearfix"></div>
+    </div>
+      }
+</div>
+<script>
+    $(document).ready(function () {
+        $('#radio-lang-1, #radio-lang-2').on('click', function () {
+            selectmodeofpayment();
+        });
+        //radio-Receipt-1
+        //selectBranch
+        $('input#radio-Receipt-2, input#radio-Receipt-1').on('click', function () {
+            simpleOResbtr();
+        });
+        //iveread
+        //firstNext
+
+        $('input#iveread').on('click', function () {
+            ivereadfun();
+        });
+
+        ////////////////////////////////////////////////////////////////
+
+        $('input#ThroughIFSCode, input#ThroughBranchName').on('click', function () {
+            if ($('input#ThroughIFSCode').is(':checked') == true) {
+                $('#BankIfsCode').css({ 'opacity': '1', 'pointer-events': 'visible' });
+                $('#BankBranchName').css({ 'opacity': '0.3', 'pointer-events': 'none' });
+                $(".country").hide(150);
+            } else {
+                $('#BankBranchName').css({ 'opacity': '1', 'pointer-events': 'visible' });
+                $('#BankIfsCode').css({ 'opacity': '0.3', 'pointer-events': 'none' });
+                $(".country").show(150);
+            }
+        });
+
+
+        $('#BankIfsCode').css({ 'opacity': '1', 'pointer-events': 'visible' });
+        $('#BankIfsCode').css({ 'opacity': '0.3', 'pointer-events': 'none' });
+        ///////////////////////////////////////////////////////////////////
+
+        var selectmodeofpayment = function () {
+            if ($('input#radio-lang-1').is(':checked') == true) {
+                $('#selectBranch').show(200, function () { simpleOResbtr() });
+                $('#selectBranchNamount').hide(200);
+            } else {
+                $('#selectBranchNamount').show(200);
+                $('#selectBranch').hide(200);
+            }
+        }
+        selectmodeofpayment();
+
+
+        var simpleOResbtr = function () {
+            if ($('input#radio-Receipt-1').is(':checked') == true) {
+                $('#selectBranch').css({ 'opacity': '0.3', 'pointer-events': 'none' });
+            } else {
+                $('#selectBranch').css({ 'opacity': '1', 'pointer-events': 'visible' });
+            }
+        }
+        simpleOResbtr();
+
+        var ivereadfun = function () {
+            if ($('input#iveread').is(':checked') == true) {
+                $('#firstNext').css({ 'opacity': '1', 'pointer-events': 'visible' });
+            } else {
+
+                $('#firstNext').css({ 'opacity': '0.3', 'pointer-events': 'none' });
+            }
+        }
+        ivereadfun();
+
+        $('#firstNext').on('click', function () {
+            window.location.href = 'index-eSBTR-paymentForm.html';
+        });
+
+
+    });
+</script>
+
+<script>
+    $(window).load(function () {
+        $('#ddlCountry').change(function () {
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetStateList", "Account"))',
+                data: {
+                    'countryId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#ddlState").empty();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#ddlState"));
+                        });
+                    }
+                    else {
+                        $("#ddlState").empty();
+                        $("#ddlDistrict").empty();
+                        $("#ddlCity").empty();
+                        $("#BranchId").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+
+        // State selected value
+        $('#ddlState').change(function () {
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetDistrictList", "Account"))',
+                data: {
+                    'stateId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#ddlDistrict").empty();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#ddlDistrict"));
+                        });
+                    }
+                    else {
+                        $("#ddlDistrict").empty();
+                        $("#ddlCity").empty();
+                        $("#BranchId").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+
+        // ddlDistrict selected value
+        $('#ddlDistrict').change(function () {
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetCityList", "Account"))',
+                data: {
+                    'districtId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#ddlCity").empty();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#ddlCity"));
+                        });
+                    }
+                    else {
+                        $("#ddlCity").empty();
+                        $("#BranchId").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+
+        // ddlCity selected value
+        $('#ddlCity').change(function () {
+            var brnch = $('#BranchList');
+            brnch.empty();
+            $("#BranchId option").remove();
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetBranchList", "Account"))',
+                data: {
+                    'cityId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#BranchId").empty();
+                        $("#BranchId option").remove();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#BranchList"));
+                        });
+                    }
+                    else {
+                        $("#BranchId").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+<script>
+    $(window).load(function () {
+        $('#CountryList').change(function () {
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetStateList", "Account"))',
+                data: {
+                    'countryId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#ddlState").empty();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#StateList"));
+                        });
+                    }
+                    else {
+                        $("#StateList").empty();
+                        $("#DistrictList").empty();
+                        $("#CityList").empty();
+                        $("#BranchList").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+
+        // State selected value
+        $('#StateList').change(function () {
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetDistrictList", "Account"))',
+                data: {
+                    'stateId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#DistrictList").empty();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#DistrictList"));
+                        });
+                    }
+                    else {
+                        $("#DistrictList").empty();
+                        $("#CityList").empty();
+                        $("#BranchList").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+
+        // ddlDistrict selected value
+        $('#DistrictList').change(function () {
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetCityList", "Account"))',
+                data: {
+                    'districtId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#CityList").empty();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#CityList"));
+                        });
+                    }
+                    else {
+                        $("#CityList").empty();
+                        $("#BranchList").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+
+        // ddlCity selected value
+        $('#CityList').change(function () {
+            $("#BranchId").empty();
+            $("#BranchId").val("");
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetBranchList", "Account"))',
+                data: {
+                    'cityId': selectedItem
+                },
+                success: function (data) {
+                    if (data.length > 1) {
+                        $("#BranchId").empty();
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#BranchId"));
+                        });
+                    }
+                    else {
+                        $("#BranchList").empty();
+                    }
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        });
+    });
+
+
+    $('#BankIfsCode').change(function () {
+        var selectedItem = $(this).val();
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '@(Url.Action("GetBranchName", "Account"))',
+            data: {
+                'ifsc': selectedItem
+            },
+            success: function (data) {
+                if (data.length > 1) {
+                    var bank = data.split('<sp>');
+                    $('#BN').val(bank[1] + "_" + bank[2]);
+                }
+                else {
+                    $("#BranchList").empty();
+                }
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+    });
+
+</script> 

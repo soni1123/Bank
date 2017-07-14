@@ -1,0 +1,320 @@
+﻿@model SyndicateBank.Areas.SuperAdmin.Models.CountryModel
+
+@{
+    ViewBag.Title = "Creates";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    #dialog-confirm {
+        height: 39px !important;
+    }
+
+    .page-search {
+        padding: 19px 0;
+    }
+</style>
+
+
+    <div class="page-container">
+    <!-- BEGIN CONTENT -->
+    <!-- BEGIN CONTENT BODY -->
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <div class="col-md-4">
+                <!-- BEGIN PAGE TITLE -->
+                <div class="page-title">
+                    <h1>Country</h1>
+                    @Html.Raw(ViewBag.Result)
+                </div>
+            </div>
+            <div class="col-md-8">
+
+                <div class="col-md-7 pull-left page-search">
+
+                    <form class="search-form" method="GET">
+                        @using (Html.BeginForm("Creates", "Country", FormMethod.Get))
+                        {
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" id="" value="@ViewBag.qur" name="query" style="border:solid 1px #f26222">
+                                <span class="input-group-btn">
+                                    <input class="btn submit icon-magnifier" type="submit" style="background:#f26222; color:white;">
+
+                                </span>
+                            </div>
+                        }
+                    </form>
+
+                </div>
+
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+
+
+    <!-- END PAGE HEAD-->
+    <!-- BEGIN PAGE CONTENT BODY -->
+    <div class="page-content">
+        <div class="container">
+            <!-- BEGIN PAGE BREADCRUMBS -->
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <a href="index-2.html">Home</a>
+                    <i class="fa fa-circle"></i>
+                </li>
+                <li>
+                    <span>Country</span>
+                </li>
+                <li class="pull-right">
+                    <a type="button" class="btn btn-success" data-toggle="modal" href="#basic">Create New</a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+            <!-- END PAGE BREADCRUMBS -->
+            <!-- BEGIN PAGE CONTENT INNER -->
+            <div class="page-content-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-cogs"></i>Country Details
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"> </a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                    <a href="javascript:;" class="reload" onclick="reloadGrid()"> </a>
+                                    <a href="javascript:;" class="remove"> </a>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="portlet-body">
+                                @*@Html.Action("List", "Country", new { Area = "SuperAdmin" })*@
+
+                                <table class="table table-striped table-hover table-bordered webgrid" id="stateEditable">
+                                    <thead>
+                                        <tr>
+                                            <th width="50%"> Country Name </th>
+                                            <th width="50%"> Country Code </th>
+                                            <th width="50%"> Country Currency </th>
+                                            <th width="50%"> Status </th>
+                                            <th width="25%" align="center" valign="middle"> Edit </th>
+                                            <th width="25%" align="center" valign="middle"> Delete </th>
+                                        </tr>
+                                    </thead>
+
+                                    @foreach (var item in Model.AvailableCountriess)
+                                    {
+                                        @Html.HiddenFor(r => item.Id)
+                                        int id = item.Id;
+                                        <tr>
+                                            <td>
+
+                                                @Html.DisplayFor(r => item.CountryName, new { @readonly = "return true" })
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(r => item.CountryCode, new { @readonly = "return true" })
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(r => item.CountryCurrency, new { @readonly = "return true" })
+                                            </td>
+                                            <td>
+                                                @Html.CheckBoxFor(r => item.Status, new { @readonly = "return true" })
+
+                                            </td>
+                                            <td>
+                                                <a href="#" onclick="GetData('@Url.Action( "Edit", "Country", new { id = item.Id })');" class="btn btn-sm btn-raised btn-info editDialog" data-toggle="modal" data-target="#basic2"> Edit </a>
+                                                @* <a type="button" class="btn btn-success" id="btnedit">Create New</a>*@
+                                                @*  @Html.ActionLink("Edit", "Edit", "Country", new { id = item.Id }, new { @class = "editDialog" })*@
+                                            </td>
+                                            <td>
+                                                <a href="#" onclick="GetDataDelete('@Url.Action("Delete", "Country", new { id = item.Id })');" class="btn btn-sm btn-raised btn-info editDialog"> Delete </a>
+
+                                                @*   @Html.ActionLink("Delete", "Delete", "Country", new { id = item.Id }, new { @class = "btn btn-sm btn-raised btn-info" })*@
+
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </table>
+                            </div>
+
+                        </div>
+                        <!-- END EXAMPLE TABLE PORTLET-->
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT INNER -->
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Creates", "Country", FormMethod.Post))
+    {
+        <div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">State Edit</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <!-- Email -->
+                        @*@Html.LabelFor(m => m.StateName, new { @class = "control-label" })*@
+                        @* <div class="has-feedback">*@
+                        @Html.TextBoxFor(m => m.CountryName, new { @class = "form-control", placeholder = "Enter Country Name", maxlength = "150" })
+                        <br />
+                        @Html.TextBoxFor(m => m.CountryCode, new { @class = "form-control", placeholder = "Enter Country Code", maxlength = "50" })
+                        <br />
+                        @Html.TextBoxFor(m => m.CountryCurrency, new { @class = "form-control", placeholder = "Enter Country Currency" })
+                        <br />
+                        @Html.Label("Is Active") @Html.CheckBoxFor(r => r.Status)
+
+
+                        @* <span class="fa fa-user form-control-feedback" aria-hidden="true"></span>*@
+                        @*</div>*@
+
+                        @*<input type="text" class="form-control" placeholder="Enter State Name">*@
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn green">Save changes</button>
+
+                        @*<button type="button" class="btn green">Save changes</button>*@
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+
+    }
+</div>
+
+
+
+@using (Html.BeginForm("Edit", "Country", FormMethod.Post))
+{
+<div class="modal fade" id="basic2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="color:blueviolet;font-weight:bold">Edit</h4>
+
+
+            </div>
+
+
+
+            <div class="modal-body">
+                @Html.HiddenFor(m => m.Id, new { id = "txtCountryId" })
+                
+                <!-- Email -->
+                @*@Html.LabelFor(m => m.StateName, new { @class = "control-label" })*@
+                @* <div class="has-feedback">*@
+                @Html.TextBoxFor(m => m.CountryName, new { @class = "form-control",id="txtCountryName", placeholder = "Enter Country Name", maxlength = "150" })
+                <br />
+                @Html.TextBoxFor(m => m.CountryCode, new { @class = "form-control",id="txtCountryCode", placeholder = "Enter Country Code", maxlength = "50" })
+                <br />
+
+                @Html.TextBoxFor(m => m.CountryCurrency, new { @class = "form-control",id="txtCountryCurrency", placeholder = "Enter Country Currency" })
+                <br />
+
+                @Html.Label("Is Active") @Html.CheckBoxFor(m => m.Status, new { @id = "chk", @class = "chkStatus" })
+              
+                
+                @* <span class="fa fa-user form-control-feedback" aria-hidden="true"></span>*@
+                @*</div>*@
+
+                @*<input type="text" class="form-control" placeholder="Enter State Name">*@
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn green">Save changes</button>
+
+                @*<button type="button" class="btn green">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+}
+    <script>
+        $(document).on("change", ".chkStatus", function () {
+            var val = $('#chk').val();
+            if (val == true) {
+                $('#chk').val('false');
+            }
+            else {
+                $('#chk').val('true');
+            }
+            var id = $('#chk').id;
+        });
+    </script>
+
+<script>
+
+    function GetData(link) {
+        $.ajax({
+            url: link,
+            @*url: "@(Url.Action("Edit", "Country",new{id=6}))",*@
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                $('#basic2').modal('show');
+                $('#chk').val(result.Status);
+
+                $('#txtCountryName').val(result.CountryName);
+                $('#txtCountryCode').val(result.CountryCode);
+                $('#txtCountryCurrency').val(result.CountryCurrency);
+                $('#txtCountryId').val(result.Id);
+                //$('#txttatus').val(result.Status);
+
+                if ($('.chkStatus').val() == 'true') {
+                    $(".chkStatus").parent().addClass('checked');
+                } else {
+                    $(".chkStatus").parent().removeClass('checked');
+                }
+
+
+            }
+        });
+
+        return false;
+    }
+
+
+</script>
+
+<script>
+    function GetDataDelete(link) {
+        $.ajax({
+            url: link,
+            @*url: "@(Url.Action("Edit", "Country",new{id=6}))",*@
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                var url = '@Url.Action("Creates", "Country")';
+                window.location.href = url;
+                alert("Data Deleted Successfully.....");
+            }
+        });
+
+        return false;
+    }
+
+</script>
+
+<script>
+    function reloadGrid() {
+        $(".webgrid").load("/SuperAdmin/Country/Creates .webgrid");
+    }
+</script>

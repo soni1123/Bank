@@ -1,0 +1,338 @@
+﻿@model MovabilityViewModel
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>Movability</h1>
+                @Html.Raw(ViewBag.Result)
+                @Html.Raw(ViewBag.EditResult)
+
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+    <!-- END PAGE HEAD-->
+    <!-- BEGIN PAGE CONTENT BODY -->
+    <div class="page-content">
+        <div class="container">
+            <!-- BEGIN PAGE BREADCRUMBS -->
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <a href="index-2.html">Home</a>
+                    <i class="fa fa-circle"></i>
+                </li>
+                <li>
+                    <span>Movability</span>
+                </li>
+                @*<li class="pull-right">
+                        <a type="button" class="btn btn-success" data-toggle="modal" href="#basic">Create New</a>
+                    </li>*@
+            </ul>
+            <div class="clearfix"></div>
+            <!-- END PAGE BREADCRUMBS -->
+            <!-- BEGIN PAGE CONTENT INNER -->
+            <div class="page-content-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-cogs"></i>Movability Details
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"> </a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                    <a href="javascript:;" class="reload"> </a>
+                                    <a href="javascript:;" class="remove"> </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <table class="table table-striped table-hover table-bordered" id="districtEditable">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3"> Receipt Name </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.AvailableReceipt)
+                                        {
+                                            <tr>
+                                                <td colspan="3">@item.ReceiptName <span class="viewDistricts"><i class="fa fa-angle-right"></i></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <table class="table table-striped table-hover table-bordered DistrictsFDsate" id="DistrictsFDsate">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="30%"> Article Code </th>
+                                                                <th width="30%"> Article Name </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var itm in Model.AvailableArticle.Where(r => r.ReceiptId == item.Id))
+                                                            {
+                                                                <tr>
+                                                                    <td>@itm.ArticleCode</td>
+                                                                    <td colspan="2">
+                                                                        @itm.ArticleName
+                                                                        <a type="button" onclick="GetData('@Url.Action("Create", "Movability", new { Id = item.Id })');" class="btn-sm btn-success pull-right" data-toggle="modal" href="#basic">Create New Movability</a>
+                                                                        <span class="viewCity">
+                                                                            <i class="fa fa-angle-right"></i>
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <table class="table table-striped table-hover table-bordered CityFDdistrict" id="CityFDdistrict">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th width="50%"> Movablity Name </th>
+                                                                                    <th width="25%" align="center" valign="middle"> Edit Movability Name </th>
+                                                                                    <th width="25%" align="center" valign="middle"> Delete Movability Name </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach (var items in Model.AvailableMovability.Where(r => r.ArticleId == itm.Id))
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td> @items.Movability </td>
+                                                                                        <td align="center" valign="middle">
+                                                                                            <a onclick="GetEditData('@Url.Action("Edit", "Movability", new { Id = items.Id })');" data-toggle="modal" href="#basic-edit"> Edit </a>
+                                                                                        </td>
+                                                                                        <td align="center" valign="middle"><a href="#" onclick="GetDeleteData('@Url.Action("Delete", "Movability", new { Id = items.Id })');"> Delete </a></td>
+                                                                                    </tr>
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- END EXAMPLE TABLE PORTLET-->
+                    </div>
+                </div>
+            </div>
+            <!-- END PAGE CONTENT INNER -->
+        </div>
+    </div>
+    <!-- END PAGE CONTENT BODY -->
+    <!-- END CONTENT BODY -->
+</div>
+
+<script>
+    function GetData(link) {
+        $.ajax({
+            url: link,
+            @*url: "@(Url.Action("Edit", "Country",new{id=6}))",*@
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                $('#txtReceipt').val(result.ReceiptName);
+                $('#txtArticle').val(result.ArticleName);
+                $('#receptId').val(result.ReceiptId);
+                $('#articleId').val(result.ArticleId);
+                $('#basic').modal('show');
+            }
+        });
+
+        return false;
+    }
+
+</script>
+
+
+<script>
+
+</script>
+
+
+@using (Html.BeginForm("Create", "Movability", FormMethod.Post))
+{
+    <div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Movability Create</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.ReceiptName, new { @class = "form-control", @id = "txtReceipt", @disabled = "disabled" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.ArticleName, new { @class = "form-control", @id = "txtArticle", @disabled = "disabled" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.MovCode, new { @class = "form-control", placeholder = "Enter Movability Code", maxlength = "1" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Movability, new { @class = "form-control", placeholder = "Enter Movability Name", maxlength = "550" })
+                    </div>
+                    <div class="modal-body">
+                        @Html.LabelFor(m => m.Status)@Html.CheckBoxFor(m => m.Status)
+                    </div>
+                    @Html.HiddenFor(r => r.ReceiptId, new { id = "receptId" })
+                    @Html.HiddenFor(r => r.ArticleId, new { id = "articleId" })
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn green">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+}
+
+
+@using (Html.BeginForm("Edit", "Movability", FormMethod.Post))
+{
+    <div class="modal fade" id="basic-edit" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Movability Edit</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(r => r.Id, new { Id = "Id" })
+                    @Html.TextBoxFor(m => m.ArticleName, new { @class = "form-control", @disabled = "disabled", @id = "txtArticleName" })
+                    @Html.TextBoxFor(m => m.MovCode, new { @class = "form-control", placeholder = "Enter Movability Code", maxlength = "1", @id = "txtMovCode" })
+                    @Html.TextBoxFor(m => m.Movability, new { @class = "form-control", placeholder = "Enter Movability Name", maxlength = "50", @id = "txtMovability" })
+                    @Html.LabelFor(m => m.Status)@Html.CheckBoxFor(m => m.Status, new { Id = "chk", @class = "chkStatus" })
+                    @Html.HiddenFor(r => r.ArticleId, new { Id = "ArticleId" })
+
+                    @*@Html.HiddenFor(r => r.ArticleId)
+                        @Html.HiddenFor(r => r.Status)*@
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn green" id="savechanges">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+    <script>
+        var checkVal = false;
+        $(document).ready(function () {
+            $('#chkbx').on('change', function () {
+                if ($('#chkbx').is(':checked')) {
+                    checkVal = true;
+                }
+                else {
+                    checkVal = false;
+                }
+            });
+        });
+
+
+        $(document).ready(function () {
+            $('#savechanges').click(function () {
+                var Id = $('#Id').val();
+                var ArticleId = $('#ArticleId').val();
+                var MovCode = $('#MovCode').val();
+                var Movability = $('#txtMovability').val();
+                var Status = checkVal;
+
+                var allVal = { id: Id, ArticleId: ArticleId, MovCode: MovCode, Movability: Movability, Status: Status }
+
+                $.ajax({
+                    //This is where you want to post to.
+                    url: '@Url.Action("Edit","Movability")',//+Id:Id,status:status,distCode:distCode,distName:dis,
+                    async: true,
+                    type: "POST",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    data: JSON.stringify(allVal),
+                    success: function (result) {
+                        if (result.success == true)
+                            redirect('List');
+                    },
+                });
+            });
+        });
+
+
+
+        function redirect(url) {
+            window.location.href = url;
+        }
+
+    </script>
+
+
+    <script>
+        function GetEditData(link) {
+            $.ajax({
+                url: link,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    $('#chk').val(result.Status);
+                    $('#basic-edit').modal('show');
+                    $('#Id').val(result.Id);
+                    $('#MovCode').val(result.MovCode);
+                    $('#txtMovability').val(result.Movability);
+                    $('#ArticleId').val(result.ArticleId);
+                    $('#txtArticleName').val(result.Articlesss.ArticleName);
+
+                    if ($('.chkStatus').val() == 'true') {
+                        $(".chkStatus").parent().addClass('checked');
+                    } else {
+                        $(".chkStatus").parent().removeClass('checked');
+                    }
+
+                    if (result.Status) {
+                        checkVal = true;
+                    }
+                }
+            });
+
+            return false;
+        }
+
+    </script>
+}
+
+<script>
+    function GetDeleteData(link) {
+        $.ajax({
+            type: 'POST',
+            url: link,
+            cache: false,
+            success: function (result) {
+                var url = '@Url.Action("List", "Movability")';
+                window.location.href = url;
+            }
+        });
+
+        return false;
+    }
+
+</script>

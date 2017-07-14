@@ -1,0 +1,143 @@
+﻿@using SyndicateBank.Areas.Admin.Models
+@model IEnumerable<BranchScrollTransactionModel>
+
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    WebGrid grid = new WebGrid(Model, rowsPerPage: 10, canSort: true);
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="~/Charts/morris.css" rel="stylesheet" />
+<script src="~/Charts/morris.min.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<link href="~/Charts/example.css" rel="stylesheet" />
+<script src="~/Charts/example.js"></script>
+
+<style>
+    .page-search {
+        padding: 19px 0;
+    }
+</style>
+
+<div class="page-container">
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <div class="container">
+                <div class="col-md-4">
+                    <!-- BEGIN PAGE TITLE -->
+
+                </div>
+                <!-- END PAGE TITLE -->
+            </div>
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE CONTENT BODY -->
+        <div class="page-content">
+            <div class="container">
+                <div id="graph"></div>
+                <!-- BEGIN PAGE BREADCRUMBS -->
+                @*<ul class="page-breadcrumb breadcrumb">
+                        <li>
+                            <a href="index-2.html">Home</a>
+                            <i class="fa fa-circle"></i>
+                        </li>
+                        <li>
+                            <span>Stock Availability</span>
+                        </li>
+                    </ul>*@
+                <!-- END PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE CONTENT INNER -->
+                <div class="page-content-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-comments"></i>Branch Stock List
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse"> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                        <a href="#" class="reload" onclick="reloadGrid()"> </a>
+                                        <a href="javascript:;" class="remove"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-scrollable">
+                                        @grid.GetHtml(
+            tableStyle: "table table-striped table-hover", // applying style on grid
+                                    mode: WebGridPagerModes.All, //paging to grid
+                                    firstText: "<< First",
+                                    previousText: "< Prev",
+                                    nextText: "Next >",
+                                    lastText: "Last >>",
+                                    columns: new[]  // colums in grid
+                                    {
+                                        grid.Column(columnName:"BankCode",header:"Bank Code",format:@<text>@item.BankCode</text>),
+                                        grid.Column(columnName:"MainScrollNumber",header:"MainScroll Number",format:@<text>@item.MainScrollNumber</text>),
+                                        grid.Column(columnName:"GRN",header:"GRN",format:@<text>@item.GRN</text>),
+                                        grid.Column(columnName:"StationeryNumber",header:"Stationery Number",format:@<text>@item.StationeryNumber</text>),
+                                        grid.Column(columnName:"PrintStatus",header:"Print Status",format:@<text>@item.PrintStatus</text>),
+                                        grid.Column(columnName:"PrintBankBranch",header:"Print BankBranch",format:@<text>@item.PrintBankBranch</text>),
+                                        grid.Column(columnName:"EsbtrAmount",header:"Esbtr Amount",format:@<text>@item.EsbtrAmount</text>),
+                                    }
+                                  
+                    )
+
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
+                            <a href='@Url.Action("Index", "SupAdminDashboard")' class="btn btn-primary ">Click Here To Go Back To Dashboard</a>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+       
+        $(document).ready(function () {
+            var res =@ViewBag.passId;
+            alert(res)
+        $.get('@Url.Action("GetData", new { id = @ViewBag.passId })', function (result) {
+            chart.setData(result);
+
+        });
+
+    });
+
+    var chart = Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'graph',
+        data: [0, 0], // Set initial data (ideally you would provide an array of default data)
+        xkey: ['Key'], // Set the key for X-axis
+        ykeys: ['Value'], // Set the key for Y-axis
+        labels: ['Value'] // Set the label when bar is rolled over
+    });
+
+
+</script>
+

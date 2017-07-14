@@ -1,0 +1,150 @@
+﻿@model SyndicateBank.ViewModels.EsbtrPaymentViewModel
+@{
+    Layout = null;
+}
+<script src="~/Content/js/jquery-2.1.1.min.js"></script>
+<div class="col-md-12">
+    <legend class="spLegend">Property Details <i class="fa fa-angle-down pull-right"></i></legend>
+    <div class="collapsePanel">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="country" class="control-label">Article Code</label>
+                @Html.DropDownListFor(r => r.Article_Code, Model.ArticleList, new { @class = "form-control", @id = "articleId", @required = "true" })
+                <p class="help-block">Optional help text.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Movability" class="control-label">Movability</label>
+                @Html.DropDownListFor(r => r.Prop_Movability, Model.MovabilityList, new { @class = "form-control", @id = "ddlmovability", @required = "true" })
+                <p class="help-block">Optional help text.</p>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group ParticularsGroup">
+                <label for="inputTextarea-2" class="control-label">Particulars</label>
+                <div id="addressGroup">
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(r => r.Prop_Addr_Line1, new { @class = "form-control", @id = "AddressLineOne", @placeholder = "Address Line One", @required = "true", @maxlength = "16" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(r => r.Prop_Addr_Line2, new { @class = "form-control", @id = "AddressLineTwo", @placeholder = "Address Line Two", @maxlength = "16" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(r => r.Prop_Addr_Line3, new { @class = "form-control", @id = "AddressLineThree", @placeholder = "Address Line Three", @maxlength = "16" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(r => r.Prop_Addr_Line4, new { @class = "form-control", @id = "AddressLineFour", @placeholder = "Address Line Four", @maxlength = "16" })
+                    </div>
+                    <div class="col-md-12 hidden-sm hidden-xs">&nbsp;</div>
+                    <div class="col-md-15 col-sm-3">
+                        @Html.TextBoxFor(r => r.Road, new { @class = "form-control", @id = "roadname", @placeholder = "Road name", @maxlength = "16" })
+                    </div>
+                    <div class="col-md-15 col-md-3">
+                        @Html.TextBoxFor(r => r.Town_Village, new { @class = "form-control", @id = "townVillage", @placeholder = "Town/Village name", @maxlength = "16" })
+                    </div>
+                    <div class="col-md-15 col-md-3">
+                        @Html.TextBoxFor(r => r.District, new { @class = "form-control", @id = "district", @placeholder = "District name", @maxlength = "16" })
+                    </div>
+                    <div class="col-md-15 col-md-3">
+                        @Html.DropDownListFor(r => r.State, Model.StateList, new { @class = "form-control", @id = "state" })
+                    </div>
+                    <div class="col-md-12 hidden-sm hidden-xs">&nbsp;</div>
+                    <div class="col-md-15 col-md-3">
+                        <label for="pincode" class="control-label">Pincode</label>
+                        @Html.TextBoxFor(r => r.Prop_Pincode, new { @class = "form-control", @id = "pincode", @placeholder = "Enter Pincode", @type = "number", @maxlength = "6" })
+                    </div>
+
+                </div>
+                <div id="otherGroup">
+                    <div>
+                        @Html.TextBoxFor(r => r.Prop_Addr_Line1, new { @class = "form-control", @id = "PerticularsDetail", @placeholder = "Enter property particulars here", @required = "true", @maxlength = "64" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="ConsiderationAmount" class="control-label">Consideration Amount</label>
+                @Html.TextBoxFor(r => r.Consideration_Amount, new { @class = "form-control", @id = "ConsiderationAmount", @placeholder = "Enter Consieration amount here", @type = "number", @required = "true" })
+                <p class="help-block">Optional help text.</p>
+            </div>
+        </div>
+        <div class="col-md-15 col-md-3">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="PropertyArea" class="control-label">Property Area</label>
+                    @Html.TextBoxFor(r => r.Prop_Area_Units, new { @class = "form-control", @id = "PropertyArea", @placeholder = "Enter property area here", @type = "number", @required = "true" })
+                    <p class="help-block">Optional help text.</p>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    @{
+                        List<SelectListItem> Unit = new List<SelectListItem>();
+                        Unit.Add(new SelectListItem { Text = "Unit", Value = "Unit" });
+                        Unit.Add(new SelectListItem { Text = "Sq. Meter", Value = "Sq. Meter" });
+                        Unit.Add(new SelectListItem { Text = "Sq. Feet", Value = "Sq. Feet" });
+                        Unit.Add(new SelectListItem { Text = "Acres", Value = "Acres" });
+                        Unit.Add(new SelectListItem { Text = "Guntha", Value = "Guntha" });
+                        Unit.Add(new SelectListItem { Text = "Hectare", Value = "Hectare" });
+                    }
+                    <label for="PropertyUnit" class="control-label">Unit</label>
+                    @Html.DropDownListFor(r => r.ESBTR_PA_UOM, Unit, new { @class = "form-control", @id = "PropertyUnit", @required = "true" })
+                    <p class="help-block">Optional help text.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#articleId').change(function () {
+            var articleCode = $(this).val();
+            $.ajax({
+                chache: false,
+                url: '@(Url.Action("GetMovability","EsbtrPayment"))',
+                type: "POST",
+                data: { 'articleCode': articleCode },
+                success: function (data) {
+                    $('#ddlmovability').empty();
+                    $('#ddlmovability').val("");
+                    if (data.length > 0) {
+                        $(data).each(function () {
+                            $('<option value="' + this.Value + '">' + this.Text + '</option>').appendTo($("#ddlmovability"));
+                        });
+                    }
+                    else
+                        alert("No Data Available");
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            })
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#articleId').change(function () {
+            var articleCode = $(this).val();
+            if (articleCode == "ART001" || articleCode == "A002" || articleCode == "NART001") {
+                $('#addressGroup').show();
+                $('#otherGroup').hide();
+                $('#PerticularsDetail').removeAttr('required');
+            }
+            else {
+                $('#otherGroup').show();
+                $('#addressGroup').hide();
+                $('#AddressLineOne').removeAttr('required')
+                
+            }
+        });
+
+        $('#otherGroup').hide();
+    });
+</script>

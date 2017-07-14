@@ -1,0 +1,212 @@
+﻿@*@model SyndicateBank.Areas.SuperAdmin.Models.SupMainScrollStationeryModel*@
+@model IEnumerable<SyndicateBank.Areas.SuperAdmin.Models.SupMainScrollStationeryModel>
+           @using SyndicateBank.Models;
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 3);
+    grid.Pager(WebGridPagerModes.All);
+
+    DefaultConnection def = new DefaultConnection();
+}
+<style>
+    #dialog-confirm {
+
+        height:39px !important;
+    }
+    .page-search {
+        padding: 19px 0;
+    }
+
+</style>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<div class="page-container">
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+
+        <div class="page-head">
+            <div class="container">
+                <div class="col-md-4">
+                    <!-- BEGIN PAGE TITLE -->
+                    <div class="page-title">
+                        <h1>Admin Main Scroll</h1>
+                        @Html.Raw(ViewBag.Result)
+
+
+                    </div>
+                </div>
+                    <div class="col-md-8">
+
+                        <div class="col-md-7 pull-left page-search">
+
+                            <form class="search-form" method="GET">
+                                @using (Html.BeginForm("List", "SupMainScrollStationery", FormMethod.Get))
+                            {
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" id="" value="@ViewBag.qur" name="query" style="border:solid 1px #f26222">
+                                <span class="input-group-btn">
+                                    <input class="btn submit icon-magnifier" type="submit" style="background:#f26222; color:white;">
+
+                                </span>
+                            </div>
+                            }
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+        
+        <div class="page-content" style="padding-bottom:80px;">
+            <div class="container">
+                <!-- BEGIN PAGE BREADCRUMBS -->
+                <ul class="page-breadcrumb breadcrumb">
+                    <li>
+                        <a href="index-2.html">Home</a>
+                        @*<i class="fa fa-circle"></i>*@
+                    </li>
+                    @*<li>
+                        <span>Admin Main Scroll</span>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                    <li>
+                        <span>List</span>
+                    </li>*@
+                </ul>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- BEGIN SAMPLE TABLE PORTLET-->
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-comments"></i>Stock List
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"> </a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                    <a href="javascript:;" class="reload" onclick="reloadGrid()"> </a>
+                                    <a href="javascript:;" class="remove"> </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="table-scrollable">
+                                    @*<table class="table table-striped table-hover">
+                                        @grid.GetHtml(tableStyle: "webgrid-table",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    alternatingRowStyle: "webgrid-alternating-row",
+    selectedRowStyle: "webgrid-selected-row",
+    rowStyle: "webgrid-row-style",
+    columns: grid.Columns(
+                //grid.Column("Id", format: (item) => item.GetSelectLink(item.Id.ToString())),
+                         grid.Column(columnName: "RecordId", header: "RecordId"),
+                                  grid.Column(columnName: "BranchCode", header: "Branch Code"),
+                                  grid.Column(columnName: "BankCode", header: "Bank Code"),
+                                  grid.Column(columnName: "MainScrollDate", header: "MainScroll Date"),
+                                  grid.Column(columnName: "MainScrollNumber", header: "MainScroll Number"),
+                                  grid.Column(columnName: "StationeryPrinted", header: "Stationery Printed"),
+                                  grid.Column(columnName: "StationeryDamaged", header: "Stationery Damaged"),
+                grid.Column(header: "Edit", format: (item) =>
+                {
+                    var link = Html.ActionLink("Edit", "Edit", new { id = item.Id });
+                    return link;
+                }),
+                grid.Column(header: "Delete", format: (item) =>
+                {
+                    var link = Html.ActionLink("Delete", "Delete", new { id = item.Id });
+                    return link;
+                })
+
+    ))
+                                    </table>*@
+
+
+
+                                        @grid.GetHtml(
+                    tableStyle: "table table-striped table-hover webgrid", // applying style on grid
+                                   mode: WebGridPagerModes.All, //paging to grid
+                                   firstText: "<< First",
+                                   previousText: "< Prev",
+                                   nextText: "Next >",
+                                   lastText: "Last >>",
+                                   columns: new[]  // colums in grid
+                                   {
+                                       grid.Column(columnName:"RecordId",header:"Record Id",format:@<text>@item.RecordId</text>),
+                                       grid.Column(columnName:"BranchId",header:"Branch Code",format: @<text>@def.BranchMasters.Find(@item.BranchId).BranchCode</text>),
+                                       grid.Column(columnName:"BankCode",header:"Bank Code",format:@<text>@item.BankCode</text>),
+                                       grid.Column(columnName:"MainScrollDate",header:"MainScroll Date",format:@<text>@item.MainScrollDate.ToString("dd/MM/yyyy")</text>),
+                                       grid.Column(columnName:"MainScrollNumber",header:"MainScroll Number",format:@<text>@item.MainScrollNumber</text>),
+                                       grid.Column(columnName:"StationeryPrinted",header:"Stationery Printed",format:@<text>@item.StationeryPrinted</text>),
+                                       grid.Column(columnName:"StationeryDamaged",header:"Stationery Damaged",format:@<text>@item.StationeryDamaged</text>),
+                                       grid.Column(columnName:"TotalAmount",header:"Total Amount",format:@<text>@item.TotalAmount</text>),
+                                        @*grid.Column( header:"Active",format:@<text> @{var cls=""; if(item.Status==true) {cls="checked='checked'"; }}<input type="checkbox" @cls value="@item.Id" id="chk_@item.Id" disabled="disabled" class="chkBoxGroup" /></text>),*@
+                                       grid.Column(header:" ", format:@<text><a href="@Url.Action("Edit", null, new { Id = item.Id },this.Request.Url.Scheme)" class="btn btn-link btn-xs font-blue">Edit</a> <a href="#" class="btn btn-link btn-xs font-red" onclick="deleteConfirm(@item.Id)">Delete</a></text>)
+                                   }
+)
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog-confirm" title="Confirm" style="display:none;" >
+    @*<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span></p>*@
+    <h3 style="margin:0 7px 6px 0;font-size:16px;font-family:Arial">Are you sure you want to delete?</h3>
+</div>
+<script>
+    function deleteConfirm(id)
+    {
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                "Delete": function () {
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        url: "@(Url.Action("Delete", "SupMainScrollStationery"))",
+                        data: {                          
+                            "Id": id,
+                            },
+                    success: function (data) {
+                        redirect("List");
+                        $(this).dialog("close");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+
+                        alert(xhr.responseText);
+                    }
+                });
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+
+    function reloadGrid() {
+        $(".webgrid").load("/SuperAdmin/SupMainScrollStationery/List .webgrid");
+    }
+
+    function redirect(url)
+    {
+        window.location.href = url;
+    }
+
+</script>
+
+
+

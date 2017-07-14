@@ -1,0 +1,272 @@
+﻿@model SyndicateBank.ViewModels.EsbtrPaymentViewModel
+
+@{
+    Layout = null;
+
+}
+<script src="~/Content/js/jquery-2.1.1.min.js"></script>
+        <!-- Script for dynamic texboxes -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#itemcompany1').change(function () {
+                    //alert('yes');
+                    if ($('#itemcompany1').is(':checked') == true) {
+
+                        var ids = $('#itemindividual1').val();
+                        //alert(ids.toString());
+
+                        $.ajax({
+                            url: "@(Url.Action("GetPayerCompany", "EsbtrPayment"))",
+                            type: 'GET',
+                            cache: false,
+                            success: function (result) {
+                                var markup = "";
+                                for (var x = 0; x < result.length; x++) {
+                                    markup += "<option value=" + result[x].Value + ">" + result[x].Text + "</option>";
+                                }
+                                $('#ddlpid1').html(markup).show();
+
+                            }
+
+                        });
+                        $('#first1').hide();
+                        $('#second1').show();
+                        $('.partydetailsfname').removeAttr('required')
+                    }
+
+                });
+
+                $('#itemindividual1').click(function () {
+                    //alert('yes');
+                    if ($('#itemindividual1').is(':checked') == true) {
+
+                        var ids = $('#itemindividual1').val();
+                        //alert(ids.toString());
+
+                        $.ajax({
+                            url: "@(Url.Action("GetPayerIndividual", "EsbtrPayment"))",
+                            type: 'GET',
+                            cache: false,
+                            success: function (result) {
+                                var markup = "";
+                                for (var x = 0; x < result.length; x++) {
+                                    markup += "<option value=" + result[x].Value + ">" + result[x].Text + "</option>";
+                                }
+                                $('#ddlpid1').html(markup).show();
+
+                            }
+
+                        });
+                        $('#first1').show();
+                        $('#second1').hide();
+
+                    }
+
+                });
+
+                $('#itemgvtbodies1').click(function () {
+                    //alert('yes');
+                    if ($('#itemgvtbodies1').is(':checked') == true) {
+
+                        var ids = $('#itemindividual1').val();
+                        //alert(ids.toString());
+
+                        $.ajax({
+                            url: "@(Url.Action("GetPayergvt", "EsbtrPayment"))",
+                            type: 'GET',
+                            cache: false,
+                            success: function (result) {
+                                var markup = "";
+                                for (var x = 0; x < result.length; x++) {
+                                    markup += "<option value=" + result[x].Value + ">" + result[x].Text + "</option>";
+                                }
+                                $('#ddlpid1').html(markup).show();
+
+                            }
+
+                        });
+                        $('#first1').hide();
+                        $('#second1').show();
+                        $('.partydetailsfname').removeAttr('required')
+
+                    }
+
+                });
+
+                $('#itemforgnbodies1').click(function () {
+                    //alert('yes');
+                    if ($('#itemforgnbodies1').is(':checked') == true) {
+
+                        var ids = $('#itemindividual1').val();
+                        //alert(ids.toString());
+
+                        $.ajax({
+                            url: "@(Url.Action("GetPayerfrgn", "EsbtrPayment"))",
+                            type: 'GET',
+                            cache: false,
+                            success: function (result) {
+                                var markup = "";
+                                for (var x = 0; x < result.length; x++) {
+                                    markup += "<option value=" + result[x].Value + ">" + result[x].Text + "</option>";
+                                }
+                                $('#ddlpid1').html(markup).show();
+
+                            }
+
+                        });
+                        $('#first1').hide();
+                        $('#second1').show();
+                        $('.partydetailsfname').removeAttr('required')
+
+                    }
+
+                });
+
+
+
+                $('#second1').hide();
+            });
+        //
+</script>
+
+
+    <div class="col-md-12">
+        <legend class="spLegend">Other Party Details <i class="fa fa-angle-down pull-right"></i></legend>
+        <div class="collapsePanel">
+            <div class="col-md-12 noPad OtherPartyDetails">
+                <!-- Radio list -->
+                <div class="form-group">
+                    <div class="col-sm-4 col-md-2">
+                        <div class="radio">
+                            <label class="custom-option button">
+                                @* <input type="radio" id="Other-Individual" name="OtherPartyDetails" value="en" checked="checked" />*@
+
+                                @Html.RadioButtonFor(r => r.PayerModeName, SyndicateBank.Models.PayerDetailsEnum.PayerDetails.Individual, new { @checked = true, @id = "itemindividual1" })
+                                <span class="button-radio"></span>
+                            </label>
+                            <label for="Other-Individual">Individual</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="radio">
+                            <label class="custom-option button">
+
+                                @Html.RadioButtonFor(r => r.PayerModeName, SyndicateBank.Models.PayerDetailsEnum.PayerDetails.Company, new { @id = "itemcompany1" })
+
+
+                                <span class="button-radio"></span>
+                            </label>
+                            <label for="Other-Company">Company/Corporate/Trust</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3">
+                        <div class="radio">
+                            <label class="custom-option button">
+                                @*<input type="radio" id="Other-Government" name="OtherPartyDetails" value="de" />*@
+                                @Html.RadioButtonFor(r => r.PayerModeName, SyndicateBank.Models.PayerDetailsEnum.PayerDetails.GovernmentBodies, new { @id = "itemgvtbodies1" })
+
+
+                                <span class="button-radio"></span>
+                            </label>
+                            <label for="Other-Government">Government Bodies</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3">
+                        <div class="radio">
+                            <label class="custom-option button">
+                                @*<input type="radio" id="Other-ForeignBodies" name="OtherPartyDetails" value="fr" />*@
+                                @Html.RadioButtonFor(r => r.PayerModeName, SyndicateBank.Models.PayerDetailsEnum.PayerDetails.ForeignBodies, new { @id = "itemforgnbodies1" })
+
+
+                                <span class="button-radio"></span>
+                            </label>
+                            <label for="Other-ForeignBodies">Foreign Bodies</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="DutyPayerName" class="control-label">Other Party Name</label>
+                <div id="first1">
+                    <div class="form-group col-md-4 noPad">
+                        @*   <input type="text" class="form-control" id="DutyPayerName" placeholder="First Name" />*@
+
+                        @Html.TextBoxFor(r => r.OtherPartyFname, new { @class = "form-control partydetailsfname", @type = "text", @placeholder = "First Name " ,@required = "required"})
+                        <p class="help-block">Optional help text.</p>
+                    </div>
+                    <div class="form-group col-md-4 noPad">
+                        @*<input type="text" class="form-control" id="DutyPayerName" placeholder="Middle Name" />*@
+                        @Html.TextBoxFor(r => r.OtherPartyMname, new { @class = "form-control partydetailsSname", @type = "text", @placeholder = "Middle Name " })
+
+
+                    </div>
+                    <div class="form-group col-md-4 noPad">
+                        @*<input type="text" class="form-control" id="DutyPayerName" placeholder="Last Name" />*@
+                        @Html.TextBoxFor(r => r.OtherPartyLname, new { @class = "form-control partydetailsTname", @type = "text", @placeholder = "Last Name " })
+                    </div>
+                </div>
+                <div id="second1">
+                    <div class="form-group col-md-9 noPad">
+                        @*<input type="text" class="form-control" id="DutyPayerName" placeholder="Last Name" />*@
+                        @Html.TextBoxFor(r => r.PartyName, new { @class = "form-control partydetailsName", @type = "text", @placeholder = "Name ", @maxlength = "48" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="OtherPartyID" class="control-label">Other Party ID</label>
+                <div class="form-group col-md-6 noPad">
+
+                    @Html.DropDownListFor(r => r.ESBTROpId, Model.AvailablePayerIds, new { @class = "form-control ", id = "ddlpid1" })
+
+                </div>
+
+                <div class="form-group col-md-6 noPad">
+                  @*  <input type="text" class="form-control" id="OtherPartyID" />*@
+                    @Html.TextBoxFor(r => r.PartyIdName, new { @class = "form-control partydetailsPartyId", @type = "text", @required = "" })
+
+
+                </div>
+
+            </div>
+        </div>
+
+       
+
+    </div>
+<script type="text/javascript">
+    $(document).on('input', '.partydetailsfname', function () {
+        if (this.value.match(/[^A-z a-z . ]/g)) {
+            this.value = this.value.replace(/[^A-z a-z . ]/g, '');
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).on('input', '.partydetailsSname', function () {
+        if (this.value.match(/[^A-z a-z . ]/g)) {
+            this.value = this.value.replace(/[^A-z a-z . ]/g, '');
+        }
+    });
+</script>
+<script type="text/javascript">
+    $(document).on('input', '.partydetailsTname', function () {
+        if (this.value.match(/[^A-z a-z . ]/g)) {
+            this.value = this.value.replace(/[^A-z a-z . ]/g, '');
+        }
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    
+                    $('.partydetailsPartyId').attr('maxlength', '21');
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).on('input', '.partydetailsName', function () {
+        if (this.value.match(/[^A-z a-z . ]/g)) {
+            this.value = this.value.replace(/[^A-z a-z . ]/g, '');
+        }
+    });
+</script>

@@ -1,0 +1,279 @@
+﻿@{
+    var area = HttpContext.Current.Request.RequestContext.RouteData.DataTokens["area"];
+    area = area ?? "";
+} 
+@if (area.Equals("Admin"))
+{
+    <div class="hor-menu" style="width:100%;">
+        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <ul class="nav navbar-nav" style="width:100%;">            
+            <li class="menu-dropdown mega-menu-dropdown ">
+                <a href="javascript:;">
+                    Master
+                    <span class="arrow"></span>
+                </a>
+                <ul class="dropdown-menu pull-left">
+                    <li class="">
+                        <a href="~/SuperAdmin/Country">Country Master</a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/State" class="nav-link"> State Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/District" class="nav-link"> District Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/City" class="nav-link"> City Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Branch" class="nav-link"> Branch Master </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="nav-link  "> Role Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Receipt" class="nav-link  "> Receipt Type Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/ArticleMaster" class="nav-link  "> Article Code Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Movability" class="nav-link  "> Movability Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Office" class="nav-link  "> Office Master </a>
+                    </li>
+
+
+                </ul>
+            </li>
+            
+            <li class="menu-dropdown classic-menu-dropdown ">
+                <a href="javascript:;">
+                    Branch Stock Details
+                    <span class="arrow"></span>
+                </a>
+                <ul class="dropdown-menu pull-left">
+                        <li class=" ">
+                            <a href="~/Admin/BranchScrollStationery" class="nav-link ">Scroll Stationery</a>
+                        </li>
+                        <li class=" ">
+                            <a href="~/Admin/BranchScrollTransaction" class="nav-link ">Scroll Transaction Stationery</a>
+                        </li>
+                        
+                       
+              
+                
+                  
+                </ul> 
+            </li>
+            
+            <li class="menu-dropdown classic-menu-dropdown ">
+                <a href="javascript:;">
+                    <!-- <i class="icon-briefcase"></i> --> Reports
+                    <span class="arrow"></span>
+                </a>
+                <!--<ul class="dropdown-menu pull-left">
+                  <li class=" ">
+                      <a href="internal-roles.html" class="nav-link  "> Internal Roles </a>
+                  </li>
+                  <li class=" ">
+                      <a href="repository-access.html" class="nav-link  "> Repository Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="e-agreement-access.html" class="nav-link  "> E-Agreement Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="smtp-config.html" class="nav-link  "> SMTP Config </a>
+                  </li>
+                  <li class=" ">
+                      <a href="mailing-list.html" class="nav-link  "> Mailing List </a>
+                  </li>
+                  <li class=" ">
+                      <a href="email-templates.html" class="nav-link  "> Email Templates </a>
+                  </li>
+                  <li class=" ">
+                      <a href="sms-config.html" class="nav-link  "> SMS Config </a>
+                  </li>
+                </ul> -->
+            </li>
+            <li class="menu-dropdown classic-menu-dropdown ">
+                <a href="javascript:;">
+                    <!-- <i class="icon-briefcase"></i> --> Settings
+                    <span class="arrow"></span>
+                </a>
+                <!--<ul class="dropdown-menu pull-left">
+                  <li class=" ">
+                      <a href="internal-roles.html" class="nav-link  "> Internal Roles </a>
+                  </li>
+                  <li class=" ">
+                      <a href="repository-access.html" class="nav-link  "> Repository Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="e-agreement-access.html" class="nav-link  "> E-Agreement Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="smtp-config.html" class="nav-link  "> SMTP Config </a>
+                  </li>
+                  <li class=" ">
+                      <a href="mailing-list.html" class="nav-link  "> Mailing List </a>
+                  </li>
+                  <li class=" ">
+                      <a href="email-templates.html" class="nav-link  "> Email Templates </a>
+                  </li>
+                  <li class=" ">
+                      <a href="sms-config.html" class="nav-link  "> SMS Config </a>
+                  </li>
+                </ul> -->
+            </li>
+            <li class="pull-right">
+                @Html.Partial("_LoginPartial")
+            </li>
+        </ul>
+    </div>
+}
+else if (area.Equals("SuperAdmin"))
+{
+    <div class="hor-menu" style="width:100%;">
+        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <ul class="nav navbar-nav" style="width:100%;">
+            <li class="menu-dropdown classic-menu-dropdown ">
+                <a href="index.html">
+                    Dashboard
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="menu-dropdown mega-menu-dropdown ">
+                <a href="javascript:;">
+                    Master
+                    <span class="arrow"></span>
+                </a>
+                <ul class="dropdown-menu pull-left">
+                    <li class="">
+                        <a href="~/SuperAdmin/Country">Country Master</a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/State" class="nav-link"> State Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/District" class="nav-link"> District Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/City" class="nav-link"> City Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Branch" class="nav-link"> Branch Master </a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="nav-link  "> Role Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Receipt" class="nav-link  "> Receipt Type Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/ArticleMaster" class="nav-link  "> Article Code Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Movability" class="nav-link  "> Movability Master </a>
+                    </li>
+                    <li class="">
+                        <a href="~/SuperAdmin/Office" class="nav-link  "> Office Master </a>
+                    </li>
+
+
+                </ul>
+            </li>
+            
+            <li class="menu-dropdown classic-menu-dropdown ">
+                <a href="javascript:;">
+                     Stock Details
+                    <span class="arrow"></span>
+                </a>
+                <ul class="dropdown-menu pull-left">
+                    <li class=" ">
+                        <a href="~/SuperAdmin/SupMainScrollStationery" class="nav-link ">MainScroll Stationery</a>
+                    </li>
+                    <li class=" ">
+                        <a href="~/SuperAdmin/SupMainTransactionStationery" class="nav-link ">MainScroll Transaction Stationery</a>
+                    </li>
+
+                </ul>
+            </li>
+            
+            <li class="menu-dropdown classic-menu-dropdown ">
+                <a href="javascript:;">
+                    <!-- <i class="icon-briefcase"></i> --> Reports
+                    <span class="arrow"></span>
+                </a>
+                <!--<ul class="dropdown-menu pull-left">
+                  <li class=" ">
+                      <a href="internal-roles.html" class="nav-link  "> Internal Roles </a>
+                  </li>
+                  <li class=" ">
+                      <a href="repository-access.html" class="nav-link  "> Repository Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="e-agreement-access.html" class="nav-link  "> E-Agreement Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="smtp-config.html" class="nav-link  "> SMTP Config </a>
+                  </li>
+                  <li class=" ">
+                      <a href="mailing-list.html" class="nav-link  "> Mailing List </a>
+                  </li>
+                  <li class=" ">
+                      <a href="email-templates.html" class="nav-link  "> Email Templates </a>
+                  </li>
+                  <li class=" ">
+                      <a href="sms-config.html" class="nav-link  "> SMS Config </a>
+                  </li>
+                </ul> -->
+            </li>
+            <li class="menu-dropdown classic-menu-dropdown ">
+                <a href="javascript:;">
+                    <!-- <i class="icon-briefcase"></i> --> Settings
+                    <span class="arrow"></span>
+                </a>
+                <!--<ul class="dropdown-menu pull-left">
+                  <li class=" ">
+                      <a href="internal-roles.html" class="nav-link  "> Internal Roles </a>
+                  </li>
+                  <li class=" ">
+                      <a href="repository-access.html" class="nav-link  "> Repository Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="e-agreement-access.html" class="nav-link  "> E-Agreement Access </a>
+                  </li>
+                  <li class=" ">
+                      <a href="smtp-config.html" class="nav-link  "> SMTP Config </a>
+                  </li>
+                  <li class=" ">
+                      <a href="mailing-list.html" class="nav-link  "> Mailing List </a>
+                  </li>
+                  <li class=" ">
+                      <a href="email-templates.html" class="nav-link  "> Email Templates </a>
+                  </li>
+                  <li class=" ">
+                      <a href="sms-config.html" class="nav-link  "> SMS Config </a>
+                  </li>
+                </ul> -->
+            </li>
+            <li class="pull-right">
+                @Html.Partial("_LoginPartial")
+            </li>
+        </ul>
+    </div>
+}
+
+
+
+
+

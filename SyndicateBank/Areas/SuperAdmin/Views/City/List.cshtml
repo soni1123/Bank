@@ -1,0 +1,388 @@
+﻿@model CityViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <!-- BEGIN CONTENT BODY -->
+        <!-- BEGIN PAGE HEAD-->
+        <div class="page-head">
+            <div class="container">
+                <!-- BEGIN PAGE TITLE -->
+                <div class="page-title">
+                    <h1>State</h1>
+                    @Html.Raw(ViewBag.Result)   
+                </div>
+                <!-- END PAGE TITLE -->
+            </div>
+        </div>
+        <!-- END PAGE HEAD-->
+        <!-- BEGIN PAGE CONTENT BODY -->
+        <div class="page-content">
+            <div class="container">
+                <!-- BEGIN PAGE BREADCRUMBS -->
+                <ul class="page-breadcrumb breadcrumb">
+                    <li>
+                        <a href="index-2.html">Home</a>
+                        <i class="fa fa-circle"></i>
+                    </li>
+                    <li>
+                        <span>City</span>
+                    </li>
+                    @*<li class="pull-right">
+                            <a type="button" class="btn btn-success" data-toggle="modal" href="#basic">Create New</a>
+                        </li>*@
+                </ul>
+                <div class="clearfix"></div>
+                <!-- END PAGE BREADCRUMBS -->
+                <!-- BEGIN PAGE CONTENT INNER -->
+                <div class="page-content-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-cogs"></i>City Details
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse"> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                        <a href="javascript:;" class="reload"> </a>
+                                        <a href="javascript:;" class="remove"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <table class="table table-striped table-hover table-bordered" id="districtEditable">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="3">Country Name </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var country in Model.AvailableCountry)
+                                            {
+                                                <tr>
+                                                    <td colspan="3">@country.CountryName <span class="viewDistricts"><i class="fa fa-angle-right"></i></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <table class="table table-striped table-hover table-bordered DistrictsFDsate" id="DistrictsFDsate">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="3"> State Name </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var item in Model.AvailableState.Where(r => r.CountryId == country.Id))
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="3"> @item.StateName <span class="viewCity"><i class="fa fa-angle-right"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="3">
+                                                                            <table class="table table-striped table-hover table-bordered CityFDdistrict" id="CityFDdistrict">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th colspan="3"> District Name </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @foreach (var items in Model.AvailableDistrict.Where(r => r.StateId == item.Id))
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td colspan="3">
+                                                                                                @items.DistrictName
+                                                                                                <a type="button" onclick="GetData('@Url.Action("Create", "City", new { DistrictId = items.Id})');" class="btn-sm btn-success pull-right" data-toggle="modal" href="#basic">Create New City</a>
+                                                                                                <span class="viewCity">
+                                                                                                    <i class="fa fa-angle-right"></i>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td colspan="3">
+                                                                                                <table class="table table-striped table-hover table-bordered BranchFDcity" id="BranchFDcity">
+                                                                                                    <!-- table3 -->
+
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th width="50%"> City Name </th>
+                                                                                                            <th width="25%" align="center" valign="middle"> Edit City Name </th>
+                                                                                                            <th width="25%" align="center" valign="middle"> Delete City Name </th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+
+                                                                                                    <tbody>
+                                                                                                        @foreach (var cityItem in Model.AvailableCity.Where(r => r.DistrictId == items.Id))
+                                                                                                        {
+                                                                                                            @Html.HiddenFor(r => r.Id)
+                                                                                                            int id = cityItem.Id;
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    @cityItem.CityName
+                                                                                                                </td>
+
+                                                                                                                <td>
+                                                                                                                    <a href="#" onclick="GetEditData('@Url.Action("Edit", "City", new { id = cityItem.Id })');" class="btn btn-sm btn-raised btn-info editDialog" data-toggle="modal" data-target="#basic-edit"> Edit </a>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <a href="#" onclick="GetDataDelete('@Url.Action("Delete", "City", new { id = cityItem.Id })');" class="btn btn-sm btn-raised btn-info editDialog"> Delete </a>
+
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        }
+
+                                                                                                    </tbody>
+                                                                                                </table>
+
+
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                    }
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END EXAMPLE TABLE PORTLET-->
+                        </div>
+                    </div>
+                </div>
+                <!-- END PAGE CONTENT INNER -->
+            </div>
+        </div>
+        <!-- END PAGE CONTENT BODY -->
+        <!-- END CONTENT BODY -->
+    </div>
+    <!-- END CONTENT -->
+</div>
+<!-- END CONTAINER -->
+
+@using (Html.BeginForm("Create", "City", FormMethod.Post, new { @class = "form-horizontal", role = "form", Area = "SuperAdmin" }))
+{
+    <div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">City Create</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(r => r.StateId, new { @id = "txtStId" })
+                    @Html.HiddenFor(r => r.DistrictId, new { @id = "txtDstId" })
+                    <div class="form-group">
+                        @Html.TextBoxFor(r => r.StateName, new { @class = "form-control", Id = "txtStateName", @disabled = "disabled" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(r => r.DistrictName, new { @class = "form-control", Id = "txtDistrictName", @disabled = "disabled" })
+                    </div>
+                    @*<div class="form-group">
+                        <input type="text" class="form-control" value="@Model.StateName" placeholder="@Model.StateName" disabled id="txtStateName">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="@Model.DistrictName" placeholder="@Model.DistrictName" disabled id="txtDistrictName">
+                    </div>*@
+                    <div class="form-group">
+                        @*<input type="text" class="form-control" placeholder="Enter City Name">*@
+                        @Html.TextBoxFor(r => r.CityName, new { @class = "form-control", @type = "text", @required = "", @placeholder = "Entry City Name" })
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(r => r.CityCode, new { @class = "form-control", @type = "text", @required = "", @placeholder = "Entry City Code" })
+                    </div>
+                    <div class="form-group">
+
+                        @Html.CheckBoxFor(r => r.Status)
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button id="SaveForm" type="submit" class="btn green">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+}
+
+@using (Html.BeginForm("Edit", "City", FormMethod.Post))
+{
+
+    <div class="modal fade" id="basic-edit" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">City Edit</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(m => m.Id, new { id = "txtcityId" })
+                    @Html.HiddenFor(m => m.DistrictId, new { @id = "txtDistId" })
+                    @Html.HiddenFor(m => m.StateId, new { @id = "txtStateId" })
+                    
+                    <div class="form-group">
+                        @Html.TextBoxFor(r => r.StateName, new { @class = "form-control", Id = "txtStateNames", @disabled="disabled" })
+                    </div>
+                    <div class="form-group">
+                       @Html.TextBoxFor(r => r.DistrictName, new { @class = "form-control", Id = "txtDistrictNames", @disabled = "disabled" })
+                    </div>
+                    
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(r => r.CityCode, new { @class = "form-control", id = "txtCityCode", @type = "text", @required = "", @placeholder = "Entry City Code" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(r => r.CityName, new { @class = "form-control", id = "txtCityName", @type = "text", @required = "", @placeholder = "Entry City Name" })
+                    </div>
+                    <div class="form-group">
+                        Status
+                        @Html.CheckBoxFor(m => m.Status, new { id = "chkbx", @class = "chkStatus", @readonly = "return true" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button id="savechanges" type="button" class="btn green">Save changes</button>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+}
+
+<script>
+    function GetData(link) {
+        $.ajax({
+            url: link,
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                $('#txtDstId').val(result.DistrictId);
+                $('#txtStId').val(result.StateId);
+                $('#txtStateName').val(result.StateName);
+                $('#txtDistrictName').val(result.DistrictName);
+                $('#basic').modal('show');
+            }
+        });
+
+        return false;
+    }
+
+</script>
+
+<script>
+    var checkVal = false;
+    $(document).ready(function () {
+        $('#chkbx').on('change', function () {
+            if ($('#chkbx').is(':checked')) {
+                checkVal = true;
+            }
+            else {
+                checkVal = false;
+            }
+        });
+    });
+
+
+    $(document).ready(function () {
+        $('#savechanges').click(function () {
+
+            var StateId = $('#txtStateId').val();
+            var Id = $('#txtcityId').val();
+            var DistrictId = $('#txtDistId').val();
+            var CityCode = $('#txtCityCode').val();
+            var CityName = $('#txtCityName').val();
+            var Status = checkVal;
+
+            var allVal = { Id: Id, StateId: StateId, DistrictId: DistrictId, CityCode: CityCode, CityName: CityName, Status: Status }
+
+            $.ajax({
+                //This is where you want to post to.
+                url: '@Url.Action("Edit","City")',
+                async: true,
+                type: "POST",
+                contentType: 'application/json',
+                dataType: "json",
+                data: JSON.stringify(allVal),
+                success: function (result) {
+                    if (result.success == true)
+                        redirect('List');
+                },
+            });
+        });
+    });
+    function redirect(url) {
+        window.location.href = url;
+    }
+
+</script>
+
+<script>
+
+    function GetEditData(link) {
+        $.ajax({
+            url: link,
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                $('#chkbx').val(result.Status);
+                $('#txtDistId').val(result.DistrictId);
+                $('#txtStateId').val(result.StateId);
+                $('#txtStateNames').val(result.StateName);
+                $('#txtDistrictNames').val(result.DistrictName);
+                $('#txtCityCode').val(result.CityCode);
+                $('#txtCityName').val(result.CityName);
+                $('#txtcityId').val(result.Id);
+                $('#basic-edit').modal('show');
+
+
+                if ($('.chkStatus').val() == 'true') {
+                    $(".chkStatus").parent().addClass('checked');
+                } else {
+                    $(".chkStatus").parent().removeClass('checked');
+                }
+
+                if (result.Status) {
+                    checkVal = true;
+                }
+            }
+        });
+
+        return false;
+    }
+</script>
+
+
+
+<script>
+    function GetDataDelete(link) {
+        $.ajax({
+            url: link,
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                var url = '@Url.Action("List", "City")';
+                window.location.href = url;
+                alert("Data Deleted Successfully.....");
+            }
+        });
+
+        return false;
+    }
+
+</script>

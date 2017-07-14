@@ -1,0 +1,412 @@
+﻿@model RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+@Html.Raw(ViewBag.Result)
+
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <header class="header">
+            <div class="col-md-8">
+                <h1>Admin Signup Form Details</h1>
+
+
+            </div>
+            <div class="col-md-4"> <img src="~/Content/images/synd-logo.jpg" class="img-responsive" style="width:100%; margin:3px 0"></div>
+        </header>
+        <div class="clearfix"></div>
+        <div class="content">
+            <article class="col-sm-12 col-md-12">
+                <div class="col-md-9" style="float:none; margin-left:auto; margin-right:auto;">
+
+                    <!-- START Registration form -->
+
+                    <div class="panel panel-form">
+                        <!-- Form header -->
+                        <div class="panel-heading">
+                            <h2 class="title">Signup Form</h2> <!---->
+                        </div>
+                        <div class="panel-body">
+                            <form role="form" id="synd-eSBTRform">
+                                <fieldset>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <!-- Email -->
+                                                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                                <div class="has-feedback">
+                                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "Email", @id = "email" })
+                                                    <span class="fa fa-user form-control-feedback" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
+                                                <div class="has-feedback">
+                                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @onkeydown = "return false;", @id = "uid" })
+                                                    <span class="fa fa-envelope form-control-feedback" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Passwords -->
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                                                <div class="has-feedback">
+                                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type = "password" })
+                                                    <span class="fa fa-lock form-control-feedback" aria-hidden="true"></span>
+                                                </div>
+                                                <p class="help-block">At least 6 characters long.</p>
+                                            </div>
+
+                                            <div class="col-sm-6 form-group">
+                                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                                                <div class="has-feedback">
+                                                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", @type = "password" })
+                                                    <span class="fa fa-lock form-control-feedback" aria-hidden="true"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Name and gender -->
+                                        <div class="row">
+                                            <div class="col-sm-8 form-group">
+                                                @Html.LabelFor(m => m.FullName, new { @class = "control-label" })
+                                                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                                            </div>
+
+                                            <div class="col-sm-4 form-group">
+                                                @Html.LabelFor(m => m.Gender, new { @class = "control-label" })
+                                                @Html.DropDownListFor(m => m.Gender, new List<SelectListItem>() { new SelectListItem() { Text = "Male", Value = "1" }, new SelectListItem() { Text = "Female", Value = "2" }, new SelectListItem() { Text = "Other", Value = "3" } }, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.CountryId, new { @class = "control-label" })
+                                                @Html.DropDownListFor(m => m.CountryId, Model.AvailableCountry, new { @class = "form-control",@id="country" })
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.StateId, new { @class = "control-label" })
+                                                @Html.DropDownListFor(m => m.StateId, Model.AvailableState, new { @class = "form-control", @id = "state" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.DistrictId, new { @class = "control-label" })
+                                                @Html.DropDownListFor(m => m.DistrictId, Model.AvailableDistrict, new { @class = "form-control", @id = "district" })
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.CityId, new { @class = "control-label" })
+                                                @Html.DropDownListFor(m => m.CityId, Model.AvailableCity, new { @class = "form-control", @id = "city" })
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.IFSC, new { @class = "control-label" })
+                                                @Html.TextBoxFor(m => m.IFSC, new { @class = "form-control", @id = "ifsc" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.BranchId, new { @class = "control-label" })
+                                                @Html.DropDownListFor(m => m.BranchId, Model.AvailableBranch, new { @class = "form-control", @id = "branch" })
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                @Html.LabelFor(m => m.BranchCode, new { @class = "control-label" })
+                                                @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @id = "brnchCode" })
+                                            </div>
+                                        </div>
+
+                                        <!-- Agree static text -->
+                                        <div class="form-group">
+                                            <p class="form-control-static">
+                                                Do you agree to the <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a>,
+                                                and terms incorporated therein?
+                                            </p>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <!-- Login button -->
+                                <div class="col-md-6 col-md-offset-3">
+                                    <!-- Create button -->
+                                    <div class="form-group text-center">
+                                        <button type="submit" class="btn btn-primary">REGISTER</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Form footer -->
+                        <!--<div class="panel-footer"> <span class="required-field">*</span> - required field </div> -->
+                    </div>
+
+                    <!-- END Registration form -->
+
+                </div>
+            </article>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $('#email').on('keyup', function () {
+            $('#uid').val($(this).val());
+        });
+
+        $('#email').on('keydown', function () {
+            $('#uid').val($(this).val());
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#branch').change(function () {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var selectedItem = $(this).val();
+
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetIFSCCode","Account"))',
+                data: {
+                    'branchId': selectedItem
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var dataVal = data.split("<sp>");
+                        $('#ifsc').val(dataVal[0]);
+                        $('#brnchCode').val(dataVal[1]);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve Details. Oh..Sheep!!');
+                }
+            });
+        });
+    });
+
+
+    $(document).ready(function () {
+        $('#ifsc').focusout(function () {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var selectedItem = $(this).val();
+
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetBranchName","Account"))',
+                data: {
+                    'ifsc': selectedItem
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var dataVal = data.split("<sp>");
+                        $('#branch').val(dataVal[0]);
+                        $('#brnchCode').val(dataVal[1]);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve Details. Oh..Sheep!!');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#country').change(function () {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var selectedItem = $(this).val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetStateList","Account"))',
+                data: {
+                    'countryId': selectedItem
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var ddlState = $("#state");
+                        var ddlCity = $("#city");
+                        var ddlDistrict = $('#district');
+                        ddlState.empty();
+                        $(data).each(function () {
+                            $(document.createElement('option'))
+                                .attr('value', this.Value)
+                                .text(this.Text)
+                                .appendTo(ddlState);
+                        });
+                    }
+                    else {
+                        ddlState.empty();
+                        ddlCity.change();
+                        ddlDistrict.change();
+                        $("#branch").empty();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#state").val("");
+                    $("#state").empty();
+                    $("#district").val("");
+                    $("#district").empty();
+                    $("#city").val("");
+                    $("#city").empty();
+                    $("#branch").val("");
+                    $("#branch").empty();
+                    //alert('Failed to retrieve Details. Oh..Sheep!!');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#state').change(function () {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var selectedItem = $(this).val();
+
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetDistrictList","Account"))',
+                data: {
+                    'stateId': selectedItem
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var ddlDistrict = $("#district");
+                        ddlDistrict.empty();
+                        $(data).each(function () {
+                            $(document.createElement('option'))
+                                .attr('value', this.Value)
+                                .text(this.Text)
+                                .appendTo(ddlDistrict);
+                        });
+                    }
+                    else {
+                        ddlDistrict.empty();
+                        ddlDistrict.empty();
+                        $("#city").val("");
+                        $("#city").empty();
+                        $("#branch").val("");
+                        $("#branch").empty();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#district").val("");
+                    $("#district").empty();
+                    $("#city").val("");
+                    $("#city").empty();
+                    $("#branch").val("");
+                    $("#branch").empty();
+                    //alert('Failed to retrieve Details. Oh..Sheep!!');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#district').change(function () {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var selectedItem = $(this).val();
+
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetCityList","Account"))',
+                data: {
+                    'districtId': selectedItem
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var ddlCity = $("#city");
+                        ddlCity.empty();
+                        $(data).each(function () {
+                            $(document.createElement('option'))
+                                .attr('value', this.Value)
+                                .text(this.Text)
+                                .appendTo(ddlCity);
+                        });
+                    }
+                    else {
+                        ddlCity.empty();
+                        ddlCity.empty();
+                        $("#branch").val("");
+                        $("#branch").empty();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#city").val("");
+                    $("#city").empty();
+                    $("#branch").val("");
+                    $("#branch").empty();
+                    //alert('Failed to retrieve Details. Oh..Sheep!!');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#city').change(function () {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var selectedItem = $(this).val();
+
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '@(Url.Action("GetBranchList","Account"))',
+                data: {
+                    'cityId': selectedItem
+                },
+                success: function (data) {
+                    if (data != null) {
+                        var ddlBranch = $("#branch");
+                        ddlBranch.empty();
+                        $(data).each(function () {
+                            $(document.createElement('option'))
+                                .attr('value', this.Value)
+                                .text(this.Text)
+                                .appendTo(ddlBranch);
+                        });
+                    }
+                    else {
+                        ddlBranch.empty();
+                        ddlBranch.empty();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#branch").val("");
+                    $("#branch").empty();
+                    //alert('Failed to retrieve Details. Oh..Sheep!!');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

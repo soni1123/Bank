@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "EsbtrPayment";
+    Layout = "~/Views/Shared/_EsbtrPaymentLayout.cshtml";
+}
+@using (Html.BeginForm("EsbtrPayment", "EsbtrPayment", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="panel-body">
+        <form role="form" id="synd-eSBTRform">
+            <fieldset>
+
+                @Html.Partial("_PaymentDetailsPartial")
+                @Html.Partial("_PayerDetailsPartial")
+                @Html.Partial("_PropertyDetailsPartial")
+                @Html.Partial("_PartyDetailsPartial")
+
+            </fieldset>
+            <div class="form-group" align="center">
+                <button id="EditeSBTRForm" type="button" class="btn btn-primary">Edit Form</button>
+                <button id="SaveeSBTRForm" type="button" class="btn btn-primary">Save & Submit Form Details</button>
+
+
+                <button id="SubmiteSBTRForm" type="submit" class="btn btn-primary">Submit Form</button>
+            </div>
+        </form>
+
+    </div>
+}

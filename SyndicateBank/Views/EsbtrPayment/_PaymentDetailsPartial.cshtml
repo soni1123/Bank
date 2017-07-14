@@ -1,0 +1,133 @@
+﻿@model SyndicateBank.ViewModels.EsbtrPaymentViewModel
+@{
+
+    Layout = null;
+}
+<script src="~/Content/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#districtcode').change(function () {
+
+                var selecteditem = $(this).val();
+
+                $.ajax({
+                    url: "@(Url.Action("GetOfficeName", "EsbtrPayment"))",
+                    type: 'POST',
+                    cache: false,
+                    data: {
+                        "district": selecteditem
+                    },
+                    success: function (result) {
+
+                        console.log(result);
+                        var ddl = $('#officename');
+                        ddl.empty();
+                        $(result).each(function () {
+                            $(document.createElement('option'))
+                                .attr('value', this.Value)
+                                .text(this.Text)
+                                .appendTo(ddl);
+                        });
+                    }
+                });
+
+            $.ajax({
+                url: "@(Url.Action("GetStampduty", "EsbtrPayment"))",
+                type: 'POST',
+            cache: false,
+            data: {
+                "district": selecteditem
+            },
+            success: function (result) {
+
+                console.log(result);
+                $("#stampduty").val(result);
+
+            }
+        });
+        });
+
+        $(".txt").each(function() {
+
+            $(this).keyup(function(){
+                calculateSum();
+            });
+        });
+
+    });
+
+    function calculateSum() {
+
+        var sum = 0;
+        //iterate through each textboxes and add the values
+        $(".txt").each(function() {
+
+            //add only if the value is number
+            if(!isNaN(this.value) && this.value.length!=0) {
+                sum += parseFloat(this.value);
+            }
+
+        });
+
+        $("#challanamount").val(sum.toFixed(2));
+       
+    }
+    //
+</script>
+<div class="col-md-12">
+    <legend class="spLegend">e-SBTR Payment Details <i class="fa fa-angle-down pull-right"></i></legend>
+    <div class="collapsePanel">
+        <div class="col-md-6">
+            <div class="form-group fancy-select">
+                <label for="District" class="control-label">District</label>
+                @Html.DropDownListFor(r => r.TREA_CODE, Model.AvailableDistrict, new { @class = "form-control", @id = "districtcode", @title = "Select a District" })
+                <p class="help-block">Optional help text.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Office" class="control-label">Office Name</label>
+                @Html.DropDownListFor(r => r.OFFICE_CODE, Model.AvailableOffice, new { @class = "form-control", @id = "officename", @title = "Select a Office" })
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <legend class="spLegend col-md-12">Object & Amount <i class="fa fa-angle-down pull-right"></i></legend>
+    <div class="collapsePanel">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Stamp" class="control-label">Stamp Duty</label>
+               @Html.TextBoxFor(r => r.HOA1, new { @class = "form-control", @id = "stampduty" ,@readonly="readonly"})
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="StampAmount" class="control-label">Amount</label>
+               @Html.TextBoxFor(r => r.AMOUNT1, new { @class = "form-control txt", @type = "number", @step = "any", @min = "0", @required = "required" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="RegistrationFee" class="control-label">Registration Fees</label>
+               @Html.TextBoxFor(r => r.HOA2, new { @class = "form-control", @id = "registrationfee", @readonly="readonly"})
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="RegistrationFeeAmount" class="control-label">Amount</label>
+                @Html.TextBoxFor(r => r.AMOUNT2, new { @class = "form-control txt", @type = "number", @step = "any", @min = "0" })
+            </div>
+        </div>
+        <div class="col-md-6 pull-right">
+            <div class="form-group">
+                <label for="TotalAmount" class="control-label">Total Amount</label>
+                @Html.TextBoxFor(r => r.CHALLAN_AMOUNT, new { @class = "form-control" , @readonly="readonly",@id="challanamount"  })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

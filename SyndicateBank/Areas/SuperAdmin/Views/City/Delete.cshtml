@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model SyndicateBank.Areas.SuperAdmin.Models.CityModel
+
+
+
+@using (Html.BeginForm("Delete", "City", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+    <table class="table table-striped table-hover table-bordered CityFDdistrict" id="CityFDdistrict">
+        <!-- table3 -->
+
+        <thead>
+            <tr>
+                <th width="50%"> City Name </th>
+
+                <th width="25%" align="center" valign="middle"> Edit City Name </th>
+                <th width="25%" align="center" valign="middle"> Delete City Name </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (int i = 0; i < Model.AvailableCity.Count; i++)
+            {
+                @Html.HiddenFor(r => r.AvailableCity[i].Id)
+                int id = Model.AvailableCity[i].Id;
+                @*@Html.HiddenFor(r => item.Id)
+                    int id = item.Id;*@
+                <tr>
+                    <td>
+
+                        @Html.DisplayFor(r => r.AvailableCity[i].CityName, new { @readonly = "return true" })
+                    </td>
+                    @*<td>
+
+                            @Html.DisplayFor(r => r.AvailableCity[i].CityCode, new { @readonly = "return true" })
+                        </td>*@
+                    <td align="center" valign="middle">
+                        @*<a type="button" class="btn-sm btn-success pull-right" data-toggle="modal" href="#basic-edit" ID="@id">Edit City Name</a>*@
+                        @*<a href="#" onclick="GetData('@Url.Action( "Edit", "City", new { id = Model.AvailableCity[i].Id })');" class="btn btn-sm btn-raised btn-info editDialog" data-toggle="modal" data-target="#basic-edit"> Edit City Name </a>*@
+                    </td>
+
+                    <td align="center" valign="middle">
+                        <a href="#" onclick="GetData('@Url.Action( "Delete", "City", new { id = Model.AvailableCity[i].Id })');" class="btn btn-sm btn-raised btn-info editDialog"> Delete City Name </a>
+                    </td>
+                    @*<button type="button" class="delete" data-id="@Model.AvailableCity.FirstOrDefault().Id">Delete</button>*@
+                    <td align="center" valign="middle">
+                        <a href="javascript:;"> Delete </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+
+
+
+<script>
+
+        function GetData(link) {
+            alert(link);
+                $.ajax({
+                    url: link,
+                    @*url: "@(Url.Action("Edit", "Country",new{id=6}))",*@
+                    type: 'Post',
+                    cache: false,
+                    success: function (result) {
+                        $('#basic-delete').modal('show');
+                        $('#txtcityId').val(result.Id);
+                        $('#txtCityName').val(result.CityName);
+                        $('#txtCityCode').val(result.CityCode);
+                        $('#txtstatus').val(result.Status);
+
+                        //status updating
+                        if ($('#txttatus').val() == 'true') {
+                            $("#txttatus").parent().addClass('checked');
+                        } else {
+                            $("#txttatus").parent().removeClass('checked');
+                        }
+                    }
+                });
+
+                return false;
+            }
+
+
+    //$(document).ready(function () {
+    //    $(".delete").on("click", function () {
+    //        var tr = $(this).closest('tr');
+    //        tr.remove();
+    //    });
+    //});
+
+</script>
+<script>
+
+        function GetData(link) {
+            alert(link);
+                $.ajax({
+                    url: link,
+                    @*url: "@(Url.Action("Edit", "Country",new{id=6}))",*@
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#basic-delete').modal('show');
+                        $('#txtcityId').val(result.Id);
+                        $('#txtCityName').val(result.CityName);
+                        $('#txtCityCode').val(result.CityCode);
+                        $('#txtstatus').val(result.Status);
+
+                        //status updating
+                        if ($('#txttatus').val() == 'true') {
+                            $("#txttatus").parent().addClass('checked');
+                        } else {
+                            $("#txttatus").parent().removeClass('checked');
+                        }
+                    }
+                });
+
+                return false;
+            }
+
+
+    //$(document).ready(function () {
+    //    $(".delete").on("click", function () {
+    //        var tr = $(this).closest('tr');
+    //        tr.remove();
+    //    });
+    //});
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        // Initialize numeric spinner input boxes
+        //$(".numeric-spinner").spinedit();
+
+        // Initalize modal dialog
+        // attach modal-container bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.editDialog', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#basic-delete');
+            $(this).attr('data-toggle', 'modal');
+        });
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+
+        //clear modal cache, so that new content can be loaded
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+</script>
+
+
+@using (Html.BeginForm("Delete", "City", FormMethod.Post))
+{
+
+    <div class="modal fade" id="basic-delete" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">City Edit</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(m => m.Id, new { id = "txtcityId" })
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Andhra Pradesh" disabled>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Rangareddy District" disabled>
+                    </div>
+                    <div class="form-group">
+                        @*<input type="text" class="form-control" placeholder="Enter City Name">*@
+                        @Html.TextBoxFor(r => r.CityName, new { @class = "form-control", id = "txtCityName", @type = "text", @required = "", @placeholder = "Entry City Name" })
+                    </div>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(r => r.CityCode, new { @class = "form-control", id = "txtCityCode", @type = "text", @required = "", @placeholder = "Entry City Code" })
+                    </div>
+                    <div class="form-group">
+
+                        @Html.CheckBoxFor(m => m.Status, new { id = "txttatus", @readonly = "return true" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    @*<button type="submit" class="btn green">Save changes</button>*@
+                    <button id="SaveForm" type="submit" class="btn green">Delete</button>
+
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+}
+
